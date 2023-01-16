@@ -7,6 +7,13 @@
 Удачи!
 
 
+### Документация
+
+Сервис реализован в соответствии с разработанным проектным заданием:
+
+- [documentation/Statement.md](documentation/Statement.md) проектное задание
+
+
 ## CI
 
 ### GitHub Workfow
