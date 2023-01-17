@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "billing"
+version = "1.0.0"
+description = ""
+authors = [""]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+backoff = "^2.2.1"
+fastapi = "^0.88.0"
+gunicorn = "^20.1.0"
+motor = {extras = ["srv"], version = "^3.1.1"}
+orjson = "^3.8.3"
+python = "^3.10"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+uvicorn = {extras = ["standard"], version = "^0.20.0"}
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+isort = "^5.10.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
