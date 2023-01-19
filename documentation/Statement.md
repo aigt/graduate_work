@@ -15,3 +15,70 @@
 
 - Помимо реализации системы, интегрируйте эту систему с админкой Django, чтобы:
   - вы могли контролировать оплату подписок клиентами
+
+
+## Основные сценарии работы с сервисом
+
+### Оплатить подписку
+
+```mermaid
+
+sequenceDiagram
+  actor User as User Client
+  participant Billing as Billing Service
+  participant PDB as Payment DB
+  participant PAPI as Payment Service API
+  participant PP as Payment Page
+  participant Auth as Auth API
+  participant NS as Notification Service
+
+
+  rect rgb(31, 97, 141)
+
+    note right of Billing: Пользователь решил оплатить подписку.
+
+    User ->> Billing: Оплати подписку
+
+    Billing ->> PAPI: Создать платёж
+
+    PAPI ->> Billing: Данные платежа
+
+    Billing ->> PDB: Занести данные созданного платежа
+    PDB ->> Billing: Done
+
+    Billing ->> User: Перенаправление
+
+
+  end
+
+  User ->> PP: Данные платежа
+  PP -->> User: Выбор нужного способа оплаты
+  User -->> PP: Способ оплаты
+  PP -->> User: Запрос подтверждения
+  User -->> PP: Подтверждение
+
+  par
+    PP ->> User: Перенаправление на страницу кинотеатра
+  and
+
+    PP ->> PAPI: Платёж прошёл
+
+    rect rgb(25, 111, 61)
+
+      note right of Billing: Платёжная система оповещает о проведённом платеже.
+
+      PAPI ->> Billing: Оповещение о проведённом платеже
+
+      Billing ->> PDB: Получить данные по платежу
+      PDB ->> Billing: Данные
+
+      Billing ->> Auth: Добавить пользователю статус подписчика
+      Auth ->> Billing: Готово
+
+      Billing ->> NS: Отправить пользователю оповещение оп платеже
+
+    end
+  end
+
+
+```
