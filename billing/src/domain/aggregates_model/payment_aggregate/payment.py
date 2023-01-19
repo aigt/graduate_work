@@ -9,3 +9,4 @@ class Payment:
     amount: UUID
     external_id: str
     external_payment: str
+    refunded: bool
