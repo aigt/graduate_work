@@ -19,6 +19,8 @@ ignore =
     WPS210,
     # WPS211 Found too many arguments: 6 > 5
     WPS211,
+    # Found too many methods: 8 > 7
+    WPS214,
     # WPS226 Found string literal over-use: ...
     WPS226,
     # WPS229 Found too long ``try`` body length: 2 > 1
