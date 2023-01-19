@@ -3,13 +3,20 @@ from uuid import UUID
 from domain.aggregates_model.payment_aggregate.payment_reposytory import (
     PaymentRepository,
 )
+from domain.aggregates_model.user_aggregate.user_id import UserId
 from domain.services.payment_system import PaymentSystem
 
 
 class User:
     """Пользователь кинотеатра."""
 
-    id: UUID
+    id = UserId()
+
+    def __init__(
+        self,
+        id: UUID,  # noqa: WPS125
+    ) -> None:
+        self.id = id  # noqa: WPS601
 
     def pay_for_subscription(
         self,
