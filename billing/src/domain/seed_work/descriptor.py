@@ -14,8 +14,19 @@ class ValidatebleDescriptor(ABC):
         Args:
             owner (Type[T]): Класс-владелец.
             name (str): Имя переменной.
+
+        Raises:
+            SyntaxError: Если в классе нет аннотации типа.
         """
         self.private_name = "_{name}".format(name=name)
+        self.value_type = owner.__annotations__.get(name)
+        if self.value_type is None:
+            raise SyntaxError(
+                "{class_name}.{field_name} must have a type annotation.".format(
+                    class_name=owner.__name__,
+                    field_name=name,
+                ),
+            )
 
     def __get__(self, instance: Optional[T], objtype: Type[T] = None) -> V:
         """Получить значение.
@@ -35,8 +46,24 @@ class ValidatebleDescriptor(ABC):
         Args:
             instance (Optional[T]): Инстанс класса.
             new_value (V): Значение.
+
+        Raises:
+            TypeError: Если у переменной неверный тип.
         """
+        # Проверка типа значения на соответствие аннотации в классе
+        if not isinstance(new_value, self.value_type):
+            raise TypeError(
+                "Wrong type {value_type} of value {new_value}, must be {expected_value_type}".format(
+                    value_type=type(new_value),
+                    new_value=new_value,
+                    expected_value_type=self.value_type,
+                ),
+            )
+
+        # Валидация значения
         self.validate(new_value)
+
+        # Присвоение значения
         setattr(instance, self.private_name, new_value)
 
     @abstractmethod
