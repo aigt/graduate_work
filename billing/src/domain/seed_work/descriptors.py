@@ -79,44 +79,8 @@ class ValidatebleDescriptor(ABC):
         """
 
 
-class ReadOnlyValidatebleDescriptor(ABC):
+class ReadOnlyValidatebleDescriptor(ValidatebleDescriptor):
     """Валидируемый дескриптор только для чтение."""
-
-    def __set_name__(self, owner: Type[T], name: str) -> None:
-        """Назначает имя переменной дескриптора.
-
-        Args:
-            owner (Type[T]): Класс-владелец.
-            name (str): Имя переменной.
-
-        Raises:
-            SyntaxError: Если в классе нет аннотации типа.
-        """
-        self.private_name = "_{name}".format(name=name)
-        self.value_type = owner.__annotations__.get(name)
-        if self.value_type is None:
-            raise SyntaxError(
-                "{class_name}.{field_name} must have a type annotation.".format(
-                    class_name=owner.__name__,
-                    field_name=name,
-                ),
-            )
-
-    def __get__(
-        self,
-        instance: Optional[T],
-        objtype: Optional[Type[T]] = None,
-    ) -> V:  # type: ignore
-        """Получить значение.
-
-        Args:
-            instance (Optional[T]): Инстанс класса.
-            objtype (Type[T], optional): Тип класса-владельца. Defaults to None.
-
-        Returns:
-            V: Значение.
-        """
-        return getattr(instance, self.private_name)  # type: ignore
 
     def __set__(self, instance: Optional[T], new_value: V) -> None:
         """Задать значение.
@@ -126,19 +90,15 @@ class ReadOnlyValidatebleDescriptor(ABC):
             new_value (V): Значение.
 
         Raises:
-            NotImplementedError: При попытке присвоения значения полю.
+            AttributeError: При попытке присвоения значения полю.
         """
-        raise NotImplementedError(
-            "Field {class_name}.{field_name} is not availiable to set.".format(
-                class_name=type(instance).__name__,
-                field_name=self.private_name,
-            ),
-        )
+        # Разрешить присваивать только начальное значение
+        if hasattr(instance, self.private_name):  # noqa: WPS421
+            raise AttributeError(
+                "Field {class_name}.{field_name} is not availiable to set.".format(
+                    class_name=type(instance).__name__,
+                    field_name=self.private_name,
+                ),
+            )
 
-    @abstractmethod
-    def validate(self, value_to_validate: V) -> None:
-        """Абстрактный метод валидации.
-
-        Args:
-            value_to_validate (V): Значение.
-        """
+        super().__set__(instance, new_value)
