@@ -8,7 +8,7 @@ V = TypeVar("V")  # noqa: WPS111
 class ValidatebleDescriptor(ABC):
     """Валидируемый дескриптор."""
 
-    def __set_name__(self, owner: Type[T], name: str):
+    def __set_name__(self, owner: Type[T], name: str) -> None:
         """Назначает имя переменной дескриптора.
 
         Args:
@@ -28,7 +28,11 @@ class ValidatebleDescriptor(ABC):
                 ),
             )
 
-    def __get__(self, instance: Optional[T], objtype: Type[T] = None) -> V:
+    def __get__(
+        self,
+        instance: Optional[T],
+        objtype: Optional[Type[T]] = None,
+    ) -> V:  # type: ignore
         """Получить значение.
 
         Args:
@@ -51,7 +55,7 @@ class ValidatebleDescriptor(ABC):
             TypeError: Если у переменной неверный тип.
         """
         # Проверка типа значения на соответствие аннотации в классе
-        if not isinstance(new_value, self.value_type):
+        if not isinstance(new_value, self.value_type):  # type: ignore
             raise TypeError(
                 "Wrong type {value_type} of value {new_value}, must be {expected_value_type}".format(
                     value_type=type(new_value),

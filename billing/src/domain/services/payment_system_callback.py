@@ -22,7 +22,7 @@ class PaymentSystemCallback:
         self,
         payment_id: str,
         event: str,
-    ):
+    ) -> None:
         """Колбэк для событий платежа.
 
         Args:

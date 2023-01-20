@@ -22,7 +22,7 @@ class User:
         self,
         payment_system: PaymentSystem,
         payment_repository: PaymentRepository,
-    ):
+    ) -> None:
         """Оплатить подписку.
 
         Args:
