@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from domain.seed_work.descriptor import ValidatebleDescriptor
+from domain.seed_work.descriptors import ValidatebleDescriptor
 
 
 class ExternalRefundAmount(ValidatebleDescriptor):

@@ -9,7 +9,7 @@ class ExternalRefund:
     """Возврат зарегестрированный в платёжной системе."""
 
     id: str
-    amount = ExternalRefundAmount()
+    amount: Decimal = ExternalRefundAmount()
     status: str
     payment_id: str
 
