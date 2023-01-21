@@ -13,7 +13,7 @@ class User:
     def __init__(self, id: UserId) -> None:  # noqa: WPS125
         self.id = id  # noqa: WPS601
 
-    def pay_for_subscription(
+    async def pay_for_subscription(
         self,
         payment_system: PaymentSystem,
         payment_repository: PaymentRepository,
@@ -24,5 +24,5 @@ class User:
             payment_system (PaymentSystem): Платёжная система.
             payment_repository (PaymentRepository): Репозторий платежей.
         """
-        ext_payment = payment_system.create_payment()
-        payment_repository.create_payment(ext_payment)
+        ext_payment = await payment_system.create_payment()
+        await payment_repository.create_payment(ext_payment)

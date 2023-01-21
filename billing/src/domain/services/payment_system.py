@@ -31,7 +31,7 @@ class PaymentSystem(ABC):
         self._auth_service = auth_service
         self._notification_service = notification_service
 
-    def on_payment_event(
+    async def on_payment_event(
         self,
         payment_id: str,
         event: str,
@@ -42,12 +42,12 @@ class PaymentSystem(ABC):
             payment_id (str): Идентификатор платежа.
             event (str): Событие платежа.
         """
-        payment = self._payment_repository.get_by_external_id(payment_id)
-        self._auth_service.add_subscriber_status(payment.user_id)
-        self._notification_service.notify_user_about_payment(payment.user_id)
+        payment = await self._payment_repository.get_by_external_id(payment_id)
+        await self._auth_service.add_subscriber_status(payment.user_id)
+        await self._notification_service.notify_user_about_payment(payment.user_id)
 
     @abstractmethod
-    def create_payment(self) -> ExternalPayment:
+    async def create_payment(self) -> ExternalPayment:
         """Создать платёж.
 
         Returns:
@@ -55,7 +55,7 @@ class PaymentSystem(ABC):
         """
 
     @abstractmethod
-    def payments(self) -> list[ExternalPayment]:
+    async def payments(self) -> list[ExternalPayment]:
         """Получить список платежей зарегестрированных в платёжной системе.
 
         Returns:
@@ -63,7 +63,7 @@ class PaymentSystem(ABC):
         """
 
     @abstractmethod
-    def payment_by_id(self, payment_id: PaymentId) -> ExternalPayment:
+    async def payment_by_id(self, payment_id: PaymentId) -> ExternalPayment:
         """Получить информацию о платеже в платёжной системе.
 
         Args:
@@ -74,7 +74,7 @@ class PaymentSystem(ABC):
         """
 
     @abstractmethod
-    def capture_payment(self, payment_id: PaymentId) -> list[ExternalPayment]:
+    async def capture_payment(self, payment_id: PaymentId) -> list[ExternalPayment]:
         """Подтвердить платёж в платёжной системе.
 
         Args:
@@ -85,7 +85,7 @@ class PaymentSystem(ABC):
         """
 
     @abstractmethod
-    def cancel_payment(self, payment_id: PaymentId) -> list[ExternalPayment]:
+    async def cancel_payment(self, payment_id: PaymentId) -> list[ExternalPayment]:
         """Отменить платёж в платёжной системе.
 
         Args:
@@ -96,7 +96,7 @@ class PaymentSystem(ABC):
         """
 
     @abstractmethod
-    def refunds(self) -> list[ExternalRefund]:
+    async def refunds(self) -> list[ExternalRefund]:
         """Получить список возвратов зарегестрированных в платёжной системе.
 
         Returns:
@@ -104,7 +104,7 @@ class PaymentSystem(ABC):
         """
 
     @abstractmethod
-    def create_refund(self) -> ExternalRefund:
+    async def create_refund(self) -> ExternalRefund:
         """Создать возврат.
 
         Returns:
@@ -112,7 +112,7 @@ class PaymentSystem(ABC):
         """
 
     @abstractmethod
-    def refund_by_id(self, refund_id: RefundId) -> ExternalRefund:
+    async def refund_by_id(self, refund_id: RefundId) -> ExternalRefund:
         """Получить информацию о возврате в платёжной системе.
 
         Args:

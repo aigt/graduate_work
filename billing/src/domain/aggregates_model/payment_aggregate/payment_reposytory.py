@@ -7,7 +7,7 @@ class PaymentRepository(ABC):
     """Интерфейс репозиториев платежей."""
 
     @abstractmethod
-    def create_payment(self) -> Payment:
+    async def create_payment(self) -> Payment:
         """Создать платёж.
 
         Returns:
@@ -15,7 +15,7 @@ class PaymentRepository(ABC):
         """
 
     @abstractmethod
-    def get_by_external_id(self, external_id: str) -> Payment:
+    async def get_by_external_id(self, external_id: str) -> Payment:
         """Найти платёж по идентификатору внешнего сервиса.
 
         Args:

@@ -7,7 +7,7 @@ class NotificationService(ABC):
     """Сервис оповещений."""
 
     @abstractmethod
-    def notify_user_about_payment(self, user_id: UUID) -> None:
+    async def notify_user_about_payment(self, user_id: UUID) -> None:
         """Оповестить пользователя о платеже.
 
         Args:
@@ -15,7 +15,7 @@ class NotificationService(ABC):
         """
 
     @abstractmethod
-    def notify_user_about_refund(self, user_id: UUID, amount: Decimal) -> None:
+    async def notify_user_about_refund(self, user_id: UUID, amount: Decimal) -> None:
         """Оповестить пользователя о возврате.
 
         Args:
