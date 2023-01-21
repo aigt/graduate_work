@@ -1,4 +1,5 @@
 # Проектная работа: диплом
+[![CI](https://github.com/aigt/graduate_work/actions/workflows/main.yml/badge.svg)](https://github.com/aigt/graduate_work/actions/workflows/main.yml)
 
 У вас будет один репозиторий на все 4 недели работы над дипломным проектом.
 
