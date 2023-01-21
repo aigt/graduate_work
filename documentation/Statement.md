@@ -82,3 +82,38 @@ sequenceDiagram
 
 
 ```
+
+### Вернуть деньги за подписку
+
+```mermaid
+
+sequenceDiagram
+  actor User as User Client
+  participant Billing as Billing Service
+  participant PDB as Payment DB
+  participant PAPI as Payment Service API
+  participant Auth as Auth API
+  participant NS as Notification Service
+
+  note right of Billing: Пользователь решил вернуть деньги.
+
+  User ->> Billing: Верни деньги
+
+  Billing ->> PDB: Запрос данных платежа пользователя
+  PDB ->> Billing: Данные
+
+  Billing ->> PAPI: Создать возврат (payment_id и amount)
+  PAPI ->> Billing: Данные возврата
+
+  Billing ->> PDB: Обнови данные платежа
+  PDB ->> Billing: Done
+
+  Billing ->> Auth: Отмени подписку (user_id)
+  Auth ->> Billing: Done
+
+  Billing ->> NS: Отправь уведомление о возврате
+  NS ->> Billing: Done
+
+  Billing ->> User: Done
+
+```
