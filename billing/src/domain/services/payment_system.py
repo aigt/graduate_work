@@ -1,21 +1,23 @@
 # https://yookassa.ru/developers/payment-acceptance/integration-scenarios/smart-payment
 from abc import ABC, abstractmethod
-from typing import NewType
 
 from domain.aggregates_model.external_payment_aggregate.external_payment import (
     ExternalPayment,
 )
+from domain.aggregates_model.external_payment_aggregate.external_payment_id import (
+    ExternalPaymentId,
+)
 from domain.aggregates_model.external_refund_aggregate.external_refund import (
     ExternalRefund,
+)
+from domain.aggregates_model.external_refund_aggregate.external_refund_id import (
+    ExternalRefundId,
 )
 from domain.aggregates_model.payment_aggregate.payment_reposytory import (
     PaymentRepository,
 )
 from domain.services.auth_service import AuthService
 from domain.services.notification_service import NotificationService
-
-PaymentId = NewType("PaymentId", str)
-RefundId = NewType("RefundId", str)
 
 
 class PaymentSystem(ABC):
@@ -63,33 +65,33 @@ class PaymentSystem(ABC):
         """
 
     @abstractmethod
-    async def payment_by_id(self, payment_id: PaymentId) -> ExternalPayment:
+    async def payment_by_id(self, payment_id: ExternalPaymentId) -> ExternalPayment:
         """Получить информацию о платеже в платёжной системе.
 
         Args:
-            payment_id (PaymentId): Идентификатор платежа.
+            payment_id (ExternalPaymentId): Идентификатор платежа.
 
         Returns:
             PaymentInSystem: Платёж в системе.
         """
 
     @abstractmethod
-    async def capture_payment(self, payment_id: PaymentId) -> list[ExternalPayment]:
+    async def capture_payment(self, payment_id: ExternalPaymentId) -> list[ExternalPayment]:
         """Подтвердить платёж в платёжной системе.
 
         Args:
-            payment_id (PaymentId): Идентификатор платежа.
+            payment_id (ExternalPaymentId): Идентификатор платежа.
 
         Returns:
             PaymentInSystem: Платёж в системе.
         """
 
     @abstractmethod
-    async def cancel_payment(self, payment_id: PaymentId) -> list[ExternalPayment]:
+    async def cancel_payment(self, payment_id: ExternalPaymentId) -> list[ExternalPayment]:
         """Отменить платёж в платёжной системе.
 
         Args:
-            payment_id (PaymentId): Идентификатор платежа.
+            payment_id (ExternalPaymentId): Идентификатор платежа.
 
         Returns:
             PaymentInSystem: Платёж в системе.
@@ -112,11 +114,11 @@ class PaymentSystem(ABC):
         """
 
     @abstractmethod
-    async def refund_by_id(self, refund_id: RefundId) -> ExternalRefund:
+    async def refund_by_id(self, refund_id: ExternalRefundId) -> ExternalRefund:
         """Получить информацию о возврате в платёжной системе.
 
         Args:
-            refund_id (RefundId): Идентификатор возврате.
+            refund_id (ExternalRefundId): Идентификатор возврате.
 
         Returns:
             ExternalRefund: Возврат в системе.
