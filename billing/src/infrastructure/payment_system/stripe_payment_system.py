@@ -29,6 +29,15 @@ class StripePaymentSystem(PaymentSystem):
     https://stripe.com/docs/api
     """
 
+    @property
+    async def system_id(self) -> str:
+        """Идентификатор платёжной системы.
+
+        Returns:
+            str: Идентификатор.
+        """
+        return "stripe"
+
     async def create_payment(self, amount: ExternalPaymentAmount) -> ExternalPayment:
         """Создать платёж.
 

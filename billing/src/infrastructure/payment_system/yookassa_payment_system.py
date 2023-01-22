@@ -29,6 +29,15 @@ class YookassaPaymentSystem(PaymentSystem):
     https://yookassa.ru/developers/payment-acceptance/integration-scenarios/smart-payment
     """
 
+    @property
+    async def system_id(self) -> str:
+        """Идентификатор платёжной системы.
+
+        Returns:
+            str: Идентификатор.
+        """
+        return "yookassa"
+
     async def create_payment(self, amount: ExternalPaymentAmount) -> ExternalPayment:
         """Создать платёж.
 

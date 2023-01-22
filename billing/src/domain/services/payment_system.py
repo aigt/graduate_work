@@ -56,6 +56,15 @@ class PaymentSystem(ABC):
         await self._auth_service.add_subscriber_status(payment.user_id)
         await self._notification_service.notify_user_about_payment(payment.user_id)
 
+    @property
+    @abstractmethod
+    async def system_id(self) -> str:
+        """Идентификатор платёжной системы.
+
+        Returns:
+            str: Идентификатор.
+        """
+
     @abstractmethod
     async def create_payment(self, amount: ExternalPaymentAmount) -> ExternalPayment:
         """Создать платёж.
