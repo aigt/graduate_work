@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
 
+from billing.src.domain.aggregates_model.payment_aggregate.payment_external_id import (
+    PaymentExternalId,
+)
+
 from domain.aggregates_model.external_payment_aggregate.external_payment import (
     ExternalPayment,
 )
@@ -52,9 +56,9 @@ class PaymentSystem(ABC):
             payment_id (str): Идентификатор платежа.
             event (str): Событие платежа.
         """
-        payment = await self._payment_repository.get_by_external_id(payment_id)
-        await self._auth_service.add_subscriber_status(payment.user_id)
-        await self._notification_service.notify_user_about_payment(payment.user_id)
+        payment = await self._payment_repository.get_by_external_id(PaymentExternalId(id=payment_id))
+        await self._auth_service.add_subscriber_status(payment.user_id.id)
+        await self._notification_service.notify_user_about_payment(payment.user_id.id)
 
     @property
     @abstractmethod
