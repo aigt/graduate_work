@@ -12,7 +12,7 @@ class ExternalPaymentAmountField(ValidatebleDescriptor):
     min_amount: Decimal = Decimal(1)
 
     def validate(self, value_to_validate: ExternalPaymentAmount) -> None:
-        """Валидировать сумму возврата.
+        """Валидировать сумму платежа.
 
         Args:
             value_to_validate (ExternalPaymentAmount): Значение для валидации.
@@ -26,6 +26,6 @@ class ExternalPaymentAmountField(ValidatebleDescriptor):
 
 @dataclass(frozen=True, slots=True)
 class ExternalPaymentAmount:
-    """Сумма возврата."""
+    """Сумма платежа."""
 
     amount: Decimal
