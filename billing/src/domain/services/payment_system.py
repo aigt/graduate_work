@@ -1,8 +1,10 @@
-# https://yookassa.ru/developers/payment-acceptance/integration-scenarios/smart-payment
 from abc import ABC, abstractmethod
 
 from domain.aggregates_model.external_payment_aggregate.external_payment import (
     ExternalPayment,
+)
+from domain.aggregates_model.external_payment_aggregate.external_payment_amount import (
+    ExternalPaymentAmount,
 )
 from domain.aggregates_model.external_payment_aggregate.external_payment_id import (
     ExternalPaymentId,
@@ -10,8 +12,14 @@ from domain.aggregates_model.external_payment_aggregate.external_payment_id impo
 from domain.aggregates_model.external_refund_aggregate.external_refund import (
     ExternalRefund,
 )
+from domain.aggregates_model.external_refund_aggregate.external_refund_amount import (
+    ExternalRefundAmount,
+)
 from domain.aggregates_model.external_refund_aggregate.external_refund_id import (
     ExternalRefundId,
+)
+from domain.aggregates_model.external_refund_aggregate.external_refund_payment_id import (
+    ExternalRefundPaymentId,
 )
 from domain.aggregates_model.payment_aggregate.payment_reposytory import (
     PaymentRepository,
@@ -49,8 +57,11 @@ class PaymentSystem(ABC):
         await self._notification_service.notify_user_about_payment(payment.user_id)
 
     @abstractmethod
-    async def create_payment(self) -> ExternalPayment:
+    async def create_payment(self, amount: ExternalPaymentAmount) -> ExternalPayment:
         """Создать платёж.
+
+        Args:
+            amount (ExternalPaymentAmount): Сумма платежа.
 
         Returns:
             ExternalPayment: Созданный платёж.
@@ -106,8 +117,12 @@ class PaymentSystem(ABC):
         """
 
     @abstractmethod
-    async def create_refund(self) -> ExternalRefund:
+    async def create_refund(self, amount: ExternalRefundAmount, payment_id: ExternalRefundPaymentId) -> ExternalRefund:
         """Создать возврат.
+
+        Args:
+            amount (ExternalRefundAmount): Сумма возврата.
+            payment_id (ExternalRefundPaymentId): Идентификатор платежа, на который осуществляется возврат.
 
         Returns:
             ExternalRefund: Созданный возврат.
@@ -118,8 +133,8 @@ class PaymentSystem(ABC):
         """Получить информацию о возврате в платёжной системе.
 
         Args:
-            refund_id (ExternalRefundId): Идентификатор возврате.
+            refund_id (ExternalRefundId): Идентификатор возврата.
 
         Returns:
-            ExternalRefund: Возврат в системе.
+            ExternalRefund: Возврат в системе в актуальном состоянии.
         """
