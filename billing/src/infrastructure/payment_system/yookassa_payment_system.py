@@ -1,4 +1,3 @@
-# https://yookassa.ru/developers/payment-acceptance/integration-scenarios/smart-payment
 from domain.aggregates_model.external_payment_aggregate.external_payment import (
     ExternalPayment,
 )
@@ -15,7 +14,11 @@ from domain.services.payment_system import PaymentSystem
 
 
 class YookassaPaymentSystem(PaymentSystem):
-    """Платёжная система ЮKassa."""
+    """Платёжная система ЮKassa.
+
+    Документация по API внешнего сервиса доступна по ссылке:
+    https://yookassa.ru/developers/payment-acceptance/integration-scenarios/smart-payment
+    """
 
     async def create_payment(self) -> ExternalPayment:
         """Создать платёж.

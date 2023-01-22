@@ -14,7 +14,11 @@ from domain.services.payment_system import PaymentSystem
 
 
 class StripePaymentSystem(PaymentSystem):
-    """Платёжная система Stripe."""
+    """Платёжная система Stripe.
+
+    Документация по API внешнего сервиса доступна по ссылке:
+    https://stripe.com/docs/api
+    """
 
     async def create_payment(self) -> ExternalPayment:
         """Создать платёж.
