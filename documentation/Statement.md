@@ -128,11 +128,11 @@ sequenceDiagram
 erDiagram
 
     payments {
-        user_id uuid,
-        amount decimal,
+        user_id uuid
+        amount decimal
         external_id uuid,
-        external_payment jsonb,
-        refunded boolean,
+        external_payment jsonb
+        refunded boolean
         system_id uuid
     }
 
