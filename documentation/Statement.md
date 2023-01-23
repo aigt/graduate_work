@@ -117,3 +117,23 @@ sequenceDiagram
   Billing ->> User: Done
 
 ```
+### Payments history DB
+
+Схема в БД для данных: `payments_history`
+
+
+Данные по истории платежей:
+
+```mermaid
+erDiagram
+
+    payments {
+        user_id uuid,
+        amount decimal,
+        external_id uuid,
+        external_payment jsonb,
+        refunded boolean,
+        system_id uuid
+    }
+
+```
