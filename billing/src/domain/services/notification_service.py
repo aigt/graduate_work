@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from billing.src.domain.aggregates_model.external_refund_aggregate.external_refund_amount import (
+from domain.aggregates_model.external_refund_aggregate.external_refund_amount import (
     ExternalRefundAmount,
 )
-from billing.src.domain.aggregates_model.user_aggregate.user_id import UserId
+from domain.aggregates_model.user_aggregate.user_id import UserId
 
 
 class NotificationService(ABC):
