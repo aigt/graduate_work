@@ -1,9 +1,3 @@
-from abc import ABC, abstractmethod
-
-from billing.src.domain.aggregates_model.payment_aggregate.payment_external_id import (
-    PaymentExternalId,
-)
-
 from domain.aggregates_model.external_payment_aggregate.external_payment import (
     ExternalPayment,
 )
@@ -25,51 +19,25 @@ from domain.aggregates_model.external_refund_aggregate.external_refund_id import
 from domain.aggregates_model.external_refund_aggregate.external_refund_payment_id import (
     ExternalRefundPaymentId,
 )
-from domain.aggregates_model.payment_aggregate.payment_reposytory import (
-    PaymentRepository,
-)
-from domain.services.auth_service import AuthService
-from domain.services.notification_service import NotificationService
+from domain.services.payment_system import PaymentSystem
 
 
-class PaymentSystem(ABC):
-    """Платёжная система."""
+class StripePaymentSystem(PaymentSystem):
+    """Платёжная система Stripe.
 
-    def __init__(
-        self,
-        payment_repository: PaymentRepository,
-        auth_service: AuthService,
-        notification_service: NotificationService,
-    ):
-        self._payment_repository = payment_repository
-        self._auth_service = auth_service
-        self._notification_service = notification_service
-
-    async def on_payment_event(
-        self,
-        payment_id: str,
-        event: str,
-    ) -> None:
-        """Колбэк для событий платежа.
-
-        Args:
-            payment_id (str): Идентификатор платежа.
-            event (str): Событие платежа.
-        """
-        payment = await self._payment_repository.get_by_external_id(PaymentExternalId(id=payment_id))
-        await self._auth_service.add_subscriber_status(payment.user_id.id)
-        await self._notification_service.notify_user_about_payment(payment.user_id.id)
+    Документация по API внешнего сервиса доступна по ссылке:
+    https://stripe.com/docs/api
+    """
 
     @property
-    @abstractmethod
     async def system_id(self) -> str:
         """Идентификатор платёжной системы.
 
         Returns:
             str: Идентификатор.
         """
+        return "stripe"
 
-    @abstractmethod
     async def create_payment(self, amount: ExternalPaymentAmount) -> ExternalPayment:
         """Создать платёж.
 
@@ -79,16 +47,16 @@ class PaymentSystem(ABC):
         Returns:
             ExternalPayment: Созданный платёж.
         """
+        return NotImplemented
 
-    @abstractmethod
     async def payments(self) -> list[ExternalPayment]:
         """Получить список платежей зарегестрированных в платёжной системе.
 
         Returns:
-            list[ExternalPayment]: Список платежей.
+            list[ExternalPayment]: Список платежей в актуальном состоянии.
         """
+        return NotImplemented
 
-    @abstractmethod
     async def payment_by_id(self, payment_id: ExternalPaymentId) -> ExternalPayment:
         """Получить информацию о платеже в платёжной системе.
 
@@ -96,10 +64,10 @@ class PaymentSystem(ABC):
             payment_id (ExternalPaymentId): Идентификатор платежа.
 
         Returns:
-            ExternalPayment: Платёж в системе.
+            ExternalPayment: Платёж в системе в актуальном состоянии.
         """
+        return NotImplemented
 
-    @abstractmethod
     async def capture_payment(self, payment_id: ExternalPaymentId) -> ExternalPayment:
         """Подтвердить платёж в платёжной системе.
 
@@ -107,10 +75,10 @@ class PaymentSystem(ABC):
             payment_id (ExternalPaymentId): Идентификатор платежа.
 
         Returns:
-            ExternalPayment: Платёж в системе.
+            ExternalPayment: Платёж в системе в актуальном состоянии.
         """
+        return NotImplemented
 
-    @abstractmethod
     async def cancel_payment(self, payment_id: ExternalPaymentId) -> ExternalPayment:
         """Отменить платёж в платёжной системе.
 
@@ -118,18 +86,18 @@ class PaymentSystem(ABC):
             payment_id (ExternalPaymentId): Идентификатор платежа.
 
         Returns:
-            ExternalPayment: Платёж в системе.
+            ExternalPayment: Платёж в системе в актуальном состоянии.
         """
+        return NotImplemented
 
-    @abstractmethod
     async def refunds(self) -> list[ExternalRefund]:
         """Получить список возвратов зарегестрированных в платёжной системе.
 
         Returns:
-            list[ExternalRefund]: Список возвратов.
+            list[ExternalRefund]: Список возвратов в актуальном состоянии.
         """
+        return NotImplemented
 
-    @abstractmethod
     async def create_refund(self, amount: ExternalRefundAmount, payment_id: ExternalRefundPaymentId) -> ExternalRefund:
         """Создать возврат.
 
@@ -140,8 +108,8 @@ class PaymentSystem(ABC):
         Returns:
             ExternalRefund: Созданный возврат.
         """
+        return NotImplemented
 
-    @abstractmethod
     async def refund_by_id(self, refund_id: ExternalRefundId) -> ExternalRefund:
         """Получить информацию о возврате в платёжной системе.
 
@@ -151,3 +119,4 @@ class PaymentSystem(ABC):
         Returns:
             ExternalRefund: Возврат в системе в актуальном состоянии.
         """
+        return NotImplemented

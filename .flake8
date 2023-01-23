@@ -27,6 +27,8 @@ ignore =
     WPS226,
     # WPS229 Found too long ``try`` body length: 2 > 1
     WPS229,
+    # WPS230 Found too many public instance attributes: 7 > 6
+    WPS230,
     # WPS305 Found `f` string
     WPS305,
     # WPS306 Found class without a base class: ...
@@ -39,7 +41,6 @@ ignore =
     WPS457,
     # WPS458 Found imports collision: ...
     WPS458
-
 
 per-file-ignores =
     # WPS201 Found module with too many imports: 14 > 12

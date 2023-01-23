@@ -1,0 +1,31 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+from decimal import Decimal
+
+from domain.seed_work.descriptors import ValidatebleDescriptor
+
+
+class ExternalPaymentAmountField(ValidatebleDescriptor):
+    """Сумма платежа."""
+
+    min_amount: Decimal = Decimal(1)
+
+    def validate(self, value_to_validate: ExternalPaymentAmount) -> None:
+        """Валидировать сумму платежа.
+
+        Args:
+            value_to_validate (ExternalPaymentAmount): Значение для валидации.
+
+        Raises:
+            ValueError: Если платёж меньше минимальной суммы.
+        """
+        if value_to_validate.amount < self.min_amount:
+            raise ValueError(f"Expected {value_to_validate!r} to be no smaller than {self.min_amount!r}")
+
+
+@dataclass(frozen=True, slots=True)
+class ExternalPaymentAmount:
+    """Сумма платежа."""
+
+    amount: Decimal
