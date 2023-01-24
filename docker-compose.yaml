@@ -12,3 +12,26 @@ services:
       interval: 10s
       timeout: 5s
       retries: 20
+
+  payment_db:
+    image: postgres:15.0-alpine
+    expose:
+      - "5432"
+    networks:
+      - history_net
+    volumes:
+      - ./payment_db_init:/docker-entrypoint-initdb.d:ro
+    env_file:
+      - env_files/pyment_db.env
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -d $$POSTGRES_DB -h $$POSTGRES_HOST -p $$POSTGRES_PORT -U $$POSTGRES_USER"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  history_net:
