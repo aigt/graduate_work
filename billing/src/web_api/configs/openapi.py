@@ -4,6 +4,9 @@ from pydantic import BaseSettings
 class OpenAPISettings(BaseSettings):
     """Настройки OpenAPI документации."""
 
+    api_docs_url: str = "/api/openapi"
+    openapi_url: str = "/api/openapi.json"
+
     api_description = "Асинхронный API для сервиса биллинга."
 
     api_healthcheck_tag = "api_healthcheck"
