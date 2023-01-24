@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from web_api.core.config import Settings
+from web_api.config.settings import Settings
 
 
 @lru_cache()
