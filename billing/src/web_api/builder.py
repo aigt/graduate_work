@@ -1,10 +1,10 @@
-from errors.handlers import install_exception_handlers
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
-from web_api.config import logger
-from web_api.config.openapi import OpenAPISettings
+from web_api.configs import logger
+from web_api.configs.openapi import OpenAPISettings
 from web_api.dependencies.common import get_settings
+from web_api.errors.handlers import install_exception_handlers
 from web_api.routers import health
 
 
@@ -32,9 +32,9 @@ def build() -> FastAPI:
         description=openapi_settings.api_description,
         openapi_tags=openapi_settings.tags_metadata,
         version=settings.api_version,
-        docs_url=settings.api_docs_url,
+        docs_url=openapi_settings.api_docs_url,
         contact=openapi_settings.contact,
-        openapi_url=settings.openapi_url,
+        openapi_url=openapi_settings.openapi_url,
         default_response_class=ORJSONResponse,
     )
 
