@@ -6,7 +6,7 @@ class AuthService(ABC):
     """Сервис авторизации."""
 
     @abstractmethod
-    def add_subscriber_status(self, user_id: UUID) -> None:
+    async def add_subscriber_status(self, user_id: UUID) -> None:
         """Добавить статус подписчика пользователю.
 
         Args:

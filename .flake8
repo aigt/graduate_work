@@ -15,14 +15,20 @@ ignore =
     D107,
     # RST301 Unexpected indentation
     RST301,
+    # WPS115 Found upper-case constant in a class: ...
+    WPS115,
     # WPS210 Found too many local variables: 7 > 5
     WPS210,
     # WPS211 Found too many arguments: 6 > 5
     WPS211,
+    # Found too many methods: 8 > 7
+    WPS214,
     # WPS226 Found string literal over-use: ...
     WPS226,
     # WPS229 Found too long ``try`` body length: 2 > 1
     WPS229,
+    # WPS230 Found too many public instance attributes: 7 > 6
+    WPS230,
     # WPS305 Found `f` string
     WPS305,
     # WPS306 Found class without a base class: ...
@@ -35,7 +41,6 @@ ignore =
     WPS457,
     # WPS458 Found imports collision: ...
     WPS458
-
 
 per-file-ignores =
     # WPS201 Found module with too many imports: 14 > 12
