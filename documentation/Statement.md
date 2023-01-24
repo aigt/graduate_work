@@ -135,5 +135,11 @@ erDiagram
         refunded boolean
         system_id uuid
     }
+    
+    subscribers {
+        user_id uuid
+        subscriber_status boolean
+        date_subscribe date
+    }
 
 ```
