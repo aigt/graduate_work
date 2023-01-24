@@ -42,4 +42,4 @@ COPY --chown=${APP_USER}:${APP_USER} ./src .
 
 USER ${APP_USER}:${APP_USER}
 
-ENTRYPOINT ["gunicorn",  "main:app", "--workers", "4",  "--worker-class",  "uvicorn.workers.UvicornWorker", "--bind", "app:8000"]
+ENTRYPOINT ["gunicorn",  "main:create_app", "--workers", "4",  "--worker-class",  "uvicorn.workers.UvicornWorker", "--bind", "app:8000"]
