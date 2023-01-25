@@ -1,34 +1,53 @@
 import stripe
 from fastapi import APIRouter
-from requests import Response
+from starlette.responses import RedirectResponse
+from fastapi import Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 
 from core.config import get_settings
 
 config = get_settings()
-
 router = APIRouter()
-from pydantic import BaseModel
+templates = Jinja2Templates(directory="templates")
 
 
-class Film(BaseModel):
-    status: str
-
-
-@router.get('/payment', response_model=Film)
-async def test_payment():
+@router.get('/payment')
+def payment():
+    user_id = 1
     stripe.api_key = config.STRIPE_SECRET_KEY
-    data = {
-        "name": 'Subscription',
-        "quantity": 1,
-        "currency": 'usd',
-        "amount": 1,
-    }
-    checkout_session = stripe.checkout.Session.create(
-        success_url='http://127.0.0.1:8000/success',
-        cancel_url='http://127.0.0.1:8000/cancel',
-        line_items=[
-            data,
-        ],
-        mode="payment",
+    customer = stripe.Customer.create(
+        metadata={'id': user_id},
     )
-    return Film(status=checkout_session.status_code)
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'price_data': {
+                'currency': 'usd',
+                'unit_amount': 1000,
+                'product_data': {
+                    'name': 'Subscription',
+                    'description': 'alexit@ya.ru',
+                },
+            },
+            'quantity': 1,
+        }],
+        mode='payment',
+        customer=customer.id,
+        success_url='http://0.0.0.0:8000/api/v1/success',
+        cancel_url='https://example.com/cancel',
+    )
+    return RedirectResponse(session.url)
+
+
+@router.get("/success", response_class=HTMLResponse)
+async def read_item(request: Request):
+    return templates.TemplateResponse("success.html", {"request": request})
+
+
+@router.get('/payment')
+def payment():
+    user_id = 1
+    stripe.api_key = config.STRIPE_SECRET_KEY
+
+    return RedirectResponse(session.url)
