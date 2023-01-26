@@ -1,12 +1,10 @@
-from abc import ABC, abstractmethod
-
 from domain.aggregates_model.user_aggregate.user_id import UserId
+from domain.services.auth_service import AuthService
 
 
-class AuthService(ABC):
-    """Сервис авторизации."""
+class MovieAuthService(AuthService):
+    """Сервис авторизации кинотеатра."""
 
-    @abstractmethod
     async def add_subscriber_status(self, user_id: UserId) -> None:
         """Добавить статус подписчика пользователю.
 

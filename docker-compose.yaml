@@ -1,6 +1,18 @@
 version: '3.9'
 
 services:
+  billing:
+    build: ./billing
+    expose:
+      - "8000"
+    env_file:
+      - ./env_files/billing.env
+    healthcheck:
+      test: curl --fail http://billing:8000/api/health/ || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
   payment_db:
     image: postgres:15.0-alpine
     expose:
