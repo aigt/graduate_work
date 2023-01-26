@@ -1,6 +1,8 @@
 import stripe
 from fastapi import APIRouter
-from starlette.responses import RedirectResponse
+from starlette.responses import RedirectResponse, JSONResponse
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -34,7 +36,7 @@ def payment():
         }],
         mode='payment',
         customer=customer.id,
-        success_url='http://0.0.0.0:8000/api/v1/success',
+        success_url='http://127.0.0.1:8000/api/v1/success',
         cancel_url='https://example.com/cancel',
     )
     return RedirectResponse(session.url)
@@ -45,9 +47,22 @@ async def read_item(request: Request):
     return templates.TemplateResponse("success.html", {"request": request})
 
 
-@router.get('/payment')
-def payment():
-    user_id = 1
-    stripe.api_key = config.STRIPE_SECRET_KEY
+endpoint_secret = 'whsec_86b9000094acb774fcc15c43bf02426cfcd32fb94538c64e0e4bbfc750e5c8c0'
 
-    return RedirectResponse(session.url)
+
+@router.get('/events')
+def webhook(request):
+    event = None
+    payload = request.data
+    sig_header = request.headers['STRIPE_SIGNATURE']
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        raise e
+    except stripe.error.SignatureVerificationError as e:
+        raise e
+    print('Unhandled event type {}'.format(event['type']))
+    return JSONResponse()
