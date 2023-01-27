@@ -50,6 +50,7 @@ per-file-ignores =
     # WPS407 Found mutable module constant
     # WPS432 Found magic number: ...
     notification_api/src/core/logger.py: WPS323, WPS407
+    billing/src/domain/services/auth_service.py: WPS531
 
 
 exclude =
