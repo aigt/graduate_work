@@ -37,8 +37,10 @@ services:
     build: admin_panel
     volumes:
       - static_data:/opt/app/static/
-    expose:
-      - "8000"
+    env_file:
+      - env_files/admin.env
+    ports:
+      - "8000:8000"
     networks:
       - history_net
     depends_on:
