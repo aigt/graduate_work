@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from uuid import UUID
+
+from domain.aggregates_model.user_aggregate.user_id import UserId
 
 from grpc.aio import insecure_channel
 
@@ -11,11 +12,12 @@ class AuthService(ABC):
     """Сервис авторизации."""
 
     @abstractmethod
-    async def add_subscriber_status(self, user_id: UUID) -> bool:
+    async def add_subscriber_status(self, user_id: UserId) -> bool:
+
         """Добавить статус подписчика пользователю.
 
         Args:
-            user_id (UUID): Id пользователя.
+            user_id (UserId): Id пользователя.
         """
 
 
@@ -28,7 +30,7 @@ class Auth(AuthService):
     def __init__(self, host: str):
         self.host = host
 
-    async def add_subscriber_status(self, user_id: UUID) -> bool:
+    async def add_subscriber_status(self, user_id: UserId) -> bool:
         """Добавить статус подписчика пользователю.
 
         Args:
@@ -44,7 +46,7 @@ class Auth(AuthService):
                 return True
             return False
 
-    async def del_subscriber_status(self, user_id: UUID) -> bool:
+    async def del_subscriber_status(self, user_id: UserId) -> bool:
         """Удалить статус подписчика пользователю.
 
         Args:

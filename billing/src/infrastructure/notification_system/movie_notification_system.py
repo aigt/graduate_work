@@ -1,15 +1,13 @@
-from abc import ABC, abstractmethod
-
 from domain.aggregates_model.external_refund_aggregate.external_refund_amount import (
     ExternalRefundAmount,
 )
 from domain.aggregates_model.user_aggregate.user_id import UserId
+from domain.services.notification_service import NotificationService
 
 
-class NotificationService(ABC):
-    """Сервис оповещений."""
+class MovieNotificationService(NotificationService):
+    """Сервис оповещений кинотеатра."""
 
-    @abstractmethod
     async def notify_user_about_payment(self, user_id: UserId) -> None:
         """Оповестить пользователя о платеже.
 
@@ -17,7 +15,6 @@ class NotificationService(ABC):
             user_id (UserId): Id пользователя.
         """
 
-    @abstractmethod
     async def notify_user_about_refund(self, user_id: UserId, amount: ExternalRefundAmount) -> None:
         """Оповестить пользователя о возврате.
 
