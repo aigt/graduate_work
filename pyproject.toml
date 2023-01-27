@@ -33,5 +33,5 @@ exclude = [
 files = "./**/*.py"
 
 [[tool.mypy.overrides]]
-module = "generator.src.grpc.*"
+module = "billing.src.infrastructure.auth_service.*"
 ignore_errors = true
