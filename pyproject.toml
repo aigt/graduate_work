@@ -28,7 +28,7 @@ ignore_errors = false
 exclude = [
     "venv",
     ".vscode",
-    "generator/src/grpc/**/*.py",
+    "billing/src/infrastructure/auth_service/**/*.py",
 ]
 files = "./**/*.py"
 
