@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
-from uuid import UUID
+
+from domain.aggregates_model.user_aggregate.user_id import UserId
 
 
 class AuthService(ABC):
     """Сервис авторизации."""
 
     @abstractmethod
-    async def add_subscriber_status(self, user_id: UUID) -> None:
+    async def add_subscriber_status(self, user_id: UserId) -> bool:
         """Добавить статус подписчика пользователю.
 
         Args:
-            user_id (UUID): Id пользователя.
+            user_id (UserId): Id пользователя.
         """

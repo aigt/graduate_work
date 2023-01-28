@@ -28,10 +28,10 @@ ignore_errors = false
 exclude = [
     "venv",
     ".vscode",
-    "generator/src/grpc/**/*.py",
+    "billing/src/infrastructure/auth_service/**/*.py",
 ]
 files = "./**/*.py"
 
 [[tool.mypy.overrides]]
-module = "generator.src.grpc.*"
+module = "billing.src.infrastructure.auth_service.*"
 ignore_errors = true
