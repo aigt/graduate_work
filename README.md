@@ -1,4 +1,5 @@
 # Проектная работа: диплом
+![python](https://img.shields.io/badge/python-3.10-blue)
 [![CI](https://github.com/aigt/graduate_work/actions/workflows/main.yml/badge.svg)](https://github.com/aigt/graduate_work/actions/workflows/main.yml)
 
 У вас будет один репозиторий на все 4 недели работы над дипломным проектом.
