@@ -9,7 +9,7 @@ from core.config import get_settings
 
 config = get_settings()
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory='templates')
 
 stripe.api_key = config.STRIPE_SECRET_KEY
 
@@ -40,8 +40,8 @@ def payment():
         }],
         mode='payment',
         customer=customer.id,
-        success_url='http://127.0.0.1:8000/api/v1/success',
-        cancel_url='https://example.com/cancel',
+        success_url=config.success_page_url,
+        cancel_url=config.cancel_page_url,
     )
     return RedirectResponse(session.url)
 
