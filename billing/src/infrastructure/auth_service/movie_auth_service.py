@@ -1,12 +1,11 @@
 from grpc.aio import insecure_channel
 
 from domain.aggregates_model.user_aggregate.user_id import UserId
-from domain.services.auth_service import AuthService
 from infrastructure.auth_service.auth_pb2 import ChangeRoleRequest, ResponseStatuses
 from infrastructure.auth_service.auth_pb2_grpc import AuthNotifyStub
 
 
-class MovieAuthService(AuthService):
+class MovieAuthService:
     """Сервис авторизации кинотеатра."""
 
     subscriber = "subscriber"

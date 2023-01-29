@@ -50,6 +50,7 @@ per-file-ignores =
     # WPS407 Found mutable module constant
     # WPS432 Found magic number: ...
     billing/src/infrastructure/auth_service/movie_auth_service.py: WPS531
+    billing/src/domain/services/auth_service.py: WPS531
 
 exclude =
     # No need to traverse our git directory
