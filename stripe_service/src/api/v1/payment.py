@@ -22,9 +22,8 @@ def payment():
     Возвращает: Перенаправляет пользователя на страницу оплаты
     """
     user_id = 1
-    stripe.api_key = config.STRIPE_SECRET_KEY
     customer = stripe.Customer.create(
-        metadata={'id': user_id},
+        metadata={'user_id': user_id},
     )
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
@@ -91,7 +90,7 @@ def get_user_id(stripe_customer_id: str) -> UUID:
     """
     return stripe.Customer.retrieve(
         stripe_customer_id
-    ).get('metadata').get('id')
+    ).get('metadata').get('user_id')
 
 
 def refund_payment(payment_intent: str) -> None:
