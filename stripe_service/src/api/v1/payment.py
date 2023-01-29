@@ -1,5 +1,6 @@
 import stripe
 from fastapi import APIRouter, status, Request, Header, Body
+from uuid import UUID
 from starlette.responses import RedirectResponse
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -9,6 +10,8 @@ from core.config import get_settings
 config = get_settings()
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
+
+stripe.api_key = config.STRIPE_SECRET_KEY
 
 
 @router.get('/payment')
@@ -78,3 +81,14 @@ async def webhook(
     else:
         print('Unhandled event type {}'.format(event['type']))
     return
+
+
+def get_customer_id(stripe_customer_id: str) -> UUID:
+    """Получает id пользователя по id пользователя в stripe
+
+    params: stripe_customer_id: string - id пользователя в stripe
+    return: id: uuid - uuid пользователя
+    """
+    return stripe.Customer.retrieve(
+        stripe_customer_id
+    ).get('metadata').get('id')
