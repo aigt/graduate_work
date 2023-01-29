@@ -83,7 +83,7 @@ async def webhook(
     return
 
 
-def get_customer_id(stripe_customer_id: str) -> UUID:
+def get_user_id(stripe_customer_id: str) -> UUID:
     """Получает id пользователя по id пользователя в stripe
 
     params: stripe_customer_id: string - id пользователя в stripe
@@ -92,3 +92,16 @@ def get_customer_id(stripe_customer_id: str) -> UUID:
     return stripe.Customer.retrieve(
         stripe_customer_id
     ).get('metadata').get('id')
+
+
+def refund_payment(payment_intent: str) -> None:
+    """Возвращает деньги пользователю
+
+    params:
+        payment_intent: str - идентификатор платежа, который необходимо вернуть
+
+    return: None
+    """
+    return stripe.Refund.create(
+        payment_intent=payment_intent
+    )
