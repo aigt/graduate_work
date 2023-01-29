@@ -1,9 +1,6 @@
 import stripe
-from fastapi import APIRouter
-from starlette.responses import RedirectResponse, JSONResponse
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
-from fastapi import Request
+from fastapi import APIRouter, status, Request, Header, Body
+from starlette.responses import RedirectResponse
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
@@ -16,6 +13,11 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get('/payment')
 def payment():
+    """Метод для создания customer (плательщика), создания сессии клиента.
+
+    Принимает: JWT-token клиента
+    Возвращает: Перенаправляет пользователя на страницу оплаты
+    """
     user_id = 1
     stripe.api_key = config.STRIPE_SECRET_KEY
     customer = stripe.Customer.create(
@@ -43,26 +45,36 @@ def payment():
 
 
 @router.get("/success", response_class=HTMLResponse)
-async def read_item(request: Request):
+async def success_page(request: Request):
+    """Метод для возвращения шаблона успешной страницы оплаты
+
+    Принимает: request: Request
+    Возвращает: шаблон успешной страницы оплаты: html
+    """
     return templates.TemplateResponse("success.html", {"request": request})
 
 
-endpoint_secret = 'whsec_86b9000094acb774fcc15c43bf02426cfcd32fb94538c64e0e4bbfc750e5c8c0'
-
-
-@router.get('/events')
-def webhook(request):
+@router.post(
+    path='/webhook',
+    status_code=status.HTTP_200_OK
+)
+async def webhook(
+        request: Request,
+        stripe_signature: str | None = Header(default=None)
+):
     event = None
-    payload = request.data
-    sig_header = request.headers['STRIPE_SIGNATURE']
-
+    payload = await request.body()
+    sig_header = stripe_signature
     try:
         event = stripe.Webhook.construct_event(
-            payload, sig_header, endpoint_secret
+            payload, sig_header, config.endpoint_secret
         )
     except ValueError as e:
         raise e
     except stripe.error.SignatureVerificationError as e:
         raise e
-    print('Unhandled event type {}'.format(event['type']))
-    return JSONResponse()
+    if event['type'] == 'checkout.session.completed':
+        payment_intent = event['data']['object']
+    else:
+        print('Unhandled event type {}'.format(event['type']))
+    return

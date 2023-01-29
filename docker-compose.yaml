@@ -17,6 +17,8 @@ services:
     image: postgres:15.0-alpine
     expose:
       - "5432"
+    ports:
+      - '5432:5432'
     networks:
       - history_net
     volumes:
