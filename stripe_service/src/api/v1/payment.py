@@ -46,14 +46,24 @@ def payment():
     return RedirectResponse(session.url)
 
 
-@router.get("/success", response_class=HTMLResponse)
+@router.get('/success', response_class=HTMLResponse)
 async def success_page(request: Request):
     """Метод для возвращения шаблона успешной страницы оплаты
 
     Принимает: request: Request
     Возвращает: шаблон успешной страницы оплаты: html
     """
-    return templates.TemplateResponse("success.html", {"request": request})
+    return templates.TemplateResponse('success.html', {'request': request})
+
+
+@router.get('/cancel', response_class=HTMLResponse)
+async def cancel_page(request: Request):
+    """Метод для возвращения шаблона неуспешной страницы оплаты
+
+    Принимает: request: Request
+    Возвращает: шаблон неуспешной страницы оплаты: html
+    """
+    return templates.TemplateResponse('cancel.html', {'request': request})
 
 
 @router.post(
