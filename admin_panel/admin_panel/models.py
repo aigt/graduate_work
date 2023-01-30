@@ -1,9 +1,29 @@
-import uuid
-
 from django.db import models
 
+class Payments(models.Model):
+    id = models.UUIDField(primary_key=True)
+    user_id = models.UUIDField()
+    amount = models.DecimalField(max_digits=5, decimal_places=2)
+    external_id = models.UUIDField()
+    external_payment = models.JSONField()
+    refunded = models.BooleanField()
+    system_id = models.UUIDField()
+
+    class Meta:
+        managed = False
+        db_table = 'payments'
+        verbose_name = 'Payment'
+        verbose_name_plural = 'Payments'
+
+
 class Subscribers(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user_id = models.UUIDField(default=uuid.uuid4, editable=False)
-    subsciber_status = models.BooleanField(default=False)
-    date_subsctibe = models.DateTimeField(auto_now=True)
+    id = models.UUIDField(primary_key=True)
+    user_id = models.UUIDField()
+    subsciber_status = models.BooleanField()
+    date_subsctibe = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'subscribers'
+        verbose_name = 'Subscriber'
+        verbose_name_plural = 'Subscribers'
