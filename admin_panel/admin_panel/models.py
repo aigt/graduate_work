@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Payments(models.Model):
     id = models.UUIDField(primary_key=True)
     user_id = models.UUIDField()
@@ -11,9 +12,9 @@ class Payments(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'payments'
-        verbose_name = 'Payment'
-        verbose_name_plural = 'Payments'
+        db_table = "payments"
+        verbose_name = "Payment"
+        verbose_name_plural = "Payments"
 
 
 class Subscribers(models.Model):
@@ -24,6 +25,6 @@ class Subscribers(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'subscribers'
-        verbose_name = 'Subscriber'
-        verbose_name_plural = 'Subscribers'
+        db_table = "subscribers"
+        verbose_name = "Subscriber"
+        verbose_name_plural = "Subscribers"

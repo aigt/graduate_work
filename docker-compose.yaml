@@ -33,7 +33,7 @@ services:
       timeout: 5s
       retries: 5
 
-  service:
+  admin_panel:
     build: admin_panel
     volumes:
       - static_data:/opt/app/static/
