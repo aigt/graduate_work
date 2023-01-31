@@ -1,5 +1,6 @@
 from django.contrib import admin
-from models import Payments, Subscribers
+
+from .models import Payments, Subscribers  # noqa: WPS300
 
 
 @admin.register(Subscribers)
