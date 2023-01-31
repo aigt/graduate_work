@@ -50,6 +50,11 @@ per-file-ignores =
     # WPS407 Found mutable module constant
     # WPS432 Found magic number: ...
     billing/src/infrastructure/auth_service/movie_auth_service.py: WPS531
+    billing/src/domain/aggregates_model/external_payment_aggregate/external_payment_id.py: WPS347 DAR401
+    billing/src/domain/aggregates_model/external_payment_aggregate/external_payment_status.py: WPS347 DAR401
+    billing/src/domain/aggregates_model/external_refund_aggregate/external_refund_id.py: WPS347 DAR401
+    billing/src/domain/aggregates_model/external_refund_aggregate/external_refund_payment_id.py: WPS347 DAR401
+    billing/src/domain/aggregates_model/external_refund_aggregate/external_refund_status.py: WPS347 DAR401
 
 exclude =
     # No need to traverse our git directory
