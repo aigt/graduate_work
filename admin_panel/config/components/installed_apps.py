@@ -1,4 +1,4 @@
-INSTALLED_APPS = [
+INSTALLED_APPS = [  # noqa: WPS407
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

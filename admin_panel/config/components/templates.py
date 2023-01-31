@@ -1,4 +1,4 @@
-TEMPLATES = [
+TEMPLATES = [  # noqa: WPS407
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [],

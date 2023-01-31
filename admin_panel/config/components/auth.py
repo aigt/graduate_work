@@ -1,4 +1,4 @@
-AUTH_PASSWORD_VALIDATORS = [
+AUTH_PASSWORD_VALIDATORS = [  # noqa: WPS407
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
