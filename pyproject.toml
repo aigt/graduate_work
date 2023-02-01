@@ -5,7 +5,6 @@ description = ""
 authors = [""]
 readme = "README.md"
 [tool.poetry.dependencies]
-stripe = "^5.0.0"
 
 
 [tool.black]
