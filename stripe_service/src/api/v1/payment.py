@@ -56,14 +56,14 @@ async def success_page(request: Request):
     return templates.TemplateResponse('success.html', {'request': request})
 
 
-@router.get('/cancel', response_class=HTMLResponse)
-async def cancel_page(request: Request):
-    """Метод для возвращения шаблона неуспешной страницы оплаты
-
-    Принимает: request: Request
-    Возвращает: шаблон неуспешной страницы оплаты: html
-    """
-    return templates.TemplateResponse('cancel.html', {'request': request})
+# @router.get('/cancel', response_class=HTMLResponse)
+# async def cancel_page(request: Request):
+#     """Метод для возвращения шаблона неуспешной страницы оплаты
+#
+#     Принимает: request: Request
+#     Возвращает: шаблон неуспешной страницы оплаты: html
+#     """
+#     return templates.TemplateResponse('cancel.html', {'request': request})
 
 
 @router.post(
@@ -74,6 +74,15 @@ async def webhook(
         request: Request,
         stripe_signature: str | None = Header(default=None)
 ):
+    """
+    Метод для работы с webhook stripe.
+
+    params:
+        request: Request - POST запрос от stripe
+        stripe_signature: str - Данные с подписью stripe
+    return:
+        event: Event - событие stripe
+    """
     event = None
     payload = await request.body()
     sig_header = stripe_signature
@@ -93,7 +102,7 @@ async def webhook(
 
 
 def get_user_id(stripe_customer_id: str) -> UUID:
-    """Получает id пользователя по id пользователя в stripe
+    """Получает id пользователя по id пользователя в stripe.
 
     params: stripe_customer_id: string - id пользователя в stripe
     return: id: uuid - uuid пользователя
@@ -104,7 +113,7 @@ def get_user_id(stripe_customer_id: str) -> UUID:
 
 
 def refund_payment(payment_intent: str) -> None:
-    """Возвращает деньги пользователю
+    """Возвращает деньги пользователю.
 
     params:
         payment_intent: str - идентификатор платежа, который необходимо вернуть

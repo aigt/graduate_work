@@ -29,7 +29,7 @@ class Settings(BaseSettings):
         env='ENDPOINT_SECRET',
     )
     success_page_url = 'http://127.0.0.1:8000/api/v1/success'
-    cancel_page_url = 'http://127.0.0.1:8000/api/v1/cancel',
+    cancel_page_url = 'http://127.0.0.1:8000/api/v1/cancel'
 
 
 @lru_cache()
