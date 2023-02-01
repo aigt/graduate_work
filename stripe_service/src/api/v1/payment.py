@@ -56,14 +56,14 @@ async def success_page(request: Request):
     return templates.TemplateResponse('success.html', {'request': request})
 
 
-# @router.get('/cancel', response_class=HTMLResponse)
-# async def cancel_page(request: Request):
-#     """Метод для возвращения шаблона неуспешной страницы оплаты
-#
-#     Принимает: request: Request
-#     Возвращает: шаблон неуспешной страницы оплаты: html
-#     """
-#     return templates.TemplateResponse('cancel.html', {'request': request})
+@router.get('/cancel', response_class=HTMLResponse)
+async def cancel_page(request: Request):
+    """Метод для возвращения шаблона неуспешной страницы оплаты
+
+    Принимает: request: Request
+    Возвращает: шаблон неуспешной страницы оплаты: html
+    """
+    return templates.TemplateResponse('cancel.html', {'request': request})
 
 
 @router.post(
@@ -123,3 +123,19 @@ def refund_payment(payment_intent: str) -> None:
     return stripe.Refund.create(
         payment_intent=payment_intent
     )
+
+
+def get_list_payments() -> None:
+    """Возвращает список платежей.
+
+    params:
+        payment_intent: str - идентификатор платежа, который необходимо вернуть
+
+    return: None
+    """
+    payments = stripe.PaymentIntent.list()
+    return stripe.PaymentIntent.list()
+
+
+if __name__ == '__main__':
+    get_list_payments()
