@@ -6,6 +6,7 @@ from web_api.configs.openapi import OpenAPISettings
 from web_api.dependencies.common import get_settings
 from web_api.errors.handlers import install_exception_handlers
 from web_api.routers import health
+from web_api.routers.v1.endpoints import stripe
 
 
 async def startup_event() -> None:
@@ -47,6 +48,11 @@ def build() -> FastAPI:
         health.router,
         prefix=settings.api_health,
         tags=[openapi_settings.api_healthcheck_tag],
+    )
+    app.include_router(
+        stripe.router,
+        prefix=settings.api_stripe,
+        tags=[openapi_settings.api_stripe_tag],
     )
 
     return app

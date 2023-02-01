@@ -10,11 +10,16 @@ class OpenAPISettings(BaseSettings):
     api_description = "Асинхронный API для сервиса биллинга."
 
     api_healthcheck_tag = "api_healthcheck"
+    api_stripe_tag = "api_stripe"
 
     tags_metadata = [
         {
             "name": api_healthcheck_tag,
             "description": "Эндпоинт для проверки состояния api-сервиса с помощью healthcheck'ов.",
+        },
+        {
+            "name": api_stripe_tag,
+            "description": "Эндпоинт для работы со stripe сервисом.",
         },
     ]
 
