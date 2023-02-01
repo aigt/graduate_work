@@ -89,7 +89,17 @@ class StripePaymentSystem(PaymentSystem):
         Returns:
             list[ExternalPayment]: Список платежей в актуальном состоянии.
         """
-        return NotImplemented
+        list_payments = []
+        payments = stripe.PaymentIntent.list(limit=100)
+        for payment in payments.auto_paging_iter():
+            payment_obj = ExternalPayment(
+                id=payment.id,
+                amount=payment.amount,
+                status=payment.status,
+                confirm_url='',
+            )
+            list_payments.append(payment_obj)
+        return list_payments
 
     async def payment_by_id(self, payment_id: ExternalPaymentId) -> ExternalPayment:
         """Получить информацию о платеже в платёжной системе.
@@ -100,7 +110,13 @@ class StripePaymentSystem(PaymentSystem):
         Returns:
             ExternalPayment: Платёж в системе в актуальном состоянии.
         """
-        return NotImplemented
+        payment = stripe.PaymentIntent.retrieve(payment_id)
+        return ExternalPayment(
+            id=payment.id,
+            amount=payment.amount,
+            status=payment.status,
+            confirm_url='',
+        )
 
     async def capture_payment(self, payment_id: ExternalPaymentId) -> ExternalPayment:
         """Подтвердить платёж в платёжной системе.
