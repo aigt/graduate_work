@@ -80,6 +80,13 @@ class ValidatebleDescriptor:
 class ReadOnlyValidatebleDescriptor(ValidatebleDescriptor):
     """Валидируемый дескриптор только для чтение."""
 
+    def validate(self, value_to_validate: V) -> None:
+        """Абстрактный метод валидации.
+
+        Args:
+            value_to_validate (V): Значение.
+        """
+
     def __set__(self, instance: Optional[T], new_value: V) -> None:
         """Задать значение.
 
