@@ -43,6 +43,7 @@ class PostgresPaymentRepository(PaymentRepository):
         Returns:
             Payment: Платёж.
         """
+        external_payment = external_payment[0]
         async with self.connect.cursor() as cur:
             await cur.execute(
                 """
