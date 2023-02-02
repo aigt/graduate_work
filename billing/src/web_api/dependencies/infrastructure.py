@@ -1,5 +1,3 @@
-from functools import lru_cache
-
 from fastapi import Depends
 
 from domain.aggregates_model.payment_aggregate.payment_reposytory import (
@@ -20,7 +18,6 @@ from web_api.configs.settings import Settings
 from web_api.dependencies.common import get_settings
 
 
-@lru_cache()
 def get_payment_repository() -> PaymentRepository:
     """Фабрика репозиториев платежей.
 
@@ -30,7 +27,6 @@ def get_payment_repository() -> PaymentRepository:
     return PostgresPaymentRepository()
 
 
-@lru_cache()
 def get_notification_service() -> NotificationService:
     """Фабрика нотификационных сервисов.
 
@@ -40,7 +36,6 @@ def get_notification_service() -> NotificationService:
     return MovieNotificationService()
 
 
-@lru_cache()
 def get_auth_service(settings: Settings = Depends(get_settings)) -> AuthService:
     """Фабрика сервиса авторизации.
 
@@ -53,7 +48,6 @@ def get_auth_service(settings: Settings = Depends(get_settings)) -> AuthService:
     return MovieAuthService(host=settings.auth_service_host)
 
 
-@lru_cache()
 def get_payment_system(
     payment_repository: PaymentRepository = Depends(get_payment_repository),
     notification_service: AuthService = Depends(get_notification_service),

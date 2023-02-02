@@ -1,5 +1,3 @@
-from functools import lru_cache
-
 from fastapi import Depends
 
 from web_api.configs.settings import Settings
@@ -7,7 +5,6 @@ from web_api.dependencies.jwt import JWT
 from web_api.services.jwt import JWTService
 
 
-@lru_cache()
 def get_settings() -> Settings:
     """Фабрика настроек.
 
