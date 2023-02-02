@@ -34,5 +34,8 @@ exclude = [
 files = "./**/*.py"
 
 [[tool.mypy.overrides]]
-module = "billing.src.infrastructure.auth_service.*"
+module = [
+    "billing.src.infrastructure.auth_service.*",
+    "tests.integration.billing_api.grpc_test_server.*"
+]
 ignore_errors = true

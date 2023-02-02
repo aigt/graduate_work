@@ -79,7 +79,9 @@ exclude =
     dist,
     billing/src/infrastructure/auth_service/auth_pb2.py,
     billing/src/infrastructure/auth_service/auth_pb2_grpc.py,
-
+    tests/integration/billing_api/grpc_test_server/auth_pb2_grpc.py
+    tests/integration/billing_api/grpc_test_server/auth_pb2.py
+    tests/integration/billing_api/grpc_test_server/server.py
 
 max-complexity = 10
 

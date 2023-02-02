@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+
+service AuthNotify {
+  rpc GetUserData (UsersDataRequest) returns (stream UsersDataResponse) {}
+  rpc GetUserDataFromUsersId (UsersIds) returns (stream UsersDataResponse) {}
+  rpc SetUserRole (ChangeRoleRequest) returns (ChangeRoleResponse) {}
+}
+
+message UsersDataRequest {}
+
+message UsersDataResponse {
+  string user_id = 1;
+  string name = 2;
+  string email = 3;
+  string telephone = 4;
+}
+
+message UsersIds {
+  string list_ids = 1;
+}
+
+message ChangeRoleRequest {
+  string user_id = 1;
+  string role = 2;
+}
+
+message ChangeRoleResponse {
+  ResponseStatuses status = 1;
+}
+
+enum ResponseStatuses {
+  BAD = 0;
+  OK = 1;
+}
