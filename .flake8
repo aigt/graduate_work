@@ -52,6 +52,7 @@ per-file-ignores =
     # D301 Use r""" if any backslashes in a docstring
     billing/src/infrastructure/auth_service/movie_auth_service.py: WPS531
     billing/src/web_api/routers/v1/endpoints/stripe.py: D301
+    billing/src/web_api/routers/v1/endpoints/payments.py: D301
 
 exclude =
     # No need to traverse our git directory
