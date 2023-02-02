@@ -76,17 +76,19 @@ class StripePaymentSystem(PaymentSystem):
         """
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
-            line_items=[{
-                "price_data": {
-                    "currency": "usd",
-                    "unit_amount": amount,
-                    "product_data": {
-                        "name": "Subscription",
-                        "description": "",
+            line_items=[
+                {
+                    "price_data": {
+                        "currency": "usd",
+                        "unit_amount": amount,
+                        "product_data": {
+                            "name": "Subscription",
+                            "description": "",
+                        },
                     },
+                    "quantity": 1,
                 },
-                "quantity": 1,
-            }],
+            ],
             mode="payment",
             success_url=self.cancel_url,
             cancel_url=self.cancel_url,
