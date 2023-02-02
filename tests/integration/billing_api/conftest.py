@@ -1,5 +1,4 @@
 pytest_plugins = (
-    "fixtures.rabbitmq",
-    "fixtures.postgres_users",
-    "fixtures.mongo",
+    "fixtures.postgres",
+    "fixtures.http_con",
 )
