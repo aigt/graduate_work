@@ -13,3 +13,12 @@ class AuthService(ABC):
         Args:
             user_id (UserId): Id пользователя.
         """
+
+    @abstractmethod
+    async def del_subscriber_status(self, user_id: UserId) -> None:
+        """Удалить статус подписчика пользователю.
+
+        Args:
+            user_id (UserId): Id пользователя.
+
+        """

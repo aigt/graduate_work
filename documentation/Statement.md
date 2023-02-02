@@ -17,6 +17,27 @@
   - вы могли контролировать оплату подписок клиентами
 
 
+## Архитектура сервиса
+
+### Схема
+
+В общем схема сервиса выглядит следующим образом:
+
+<img src="Billing_Service_Schema.png" width="100%" height="100%">
+
+
+### Приложение Billing
+
+Приложение разделено на слои с зависимостями согласно диаграммы:
+
+```mermaid
+flowchart TD
+    WebAPI --> Domain
+    Infrastructure --> Domain
+    WebAPI --> Infrastructure
+```
+
+
 ## Основные сценарии работы с сервисом
 
 ### Оплатить подписку
@@ -117,6 +138,8 @@ sequenceDiagram
   Billing ->> User: Done
 
 ```
+
+
 ### Payments history DB
 
 Схема в БД для данных: `payments_history`
