@@ -55,6 +55,6 @@ async def callback(
     # https://stripe.com/docs/api/checkout/sessions/object#checkout_session_object-payment_intent
     payment_intent = event["... object ..."]["... payment_intent ..."]
 
-    payment_system.on_payment_event(id=payment_intent, event=event_type)
+    await payment_system.on_payment_event(id=payment_intent, event=event_type)
 
     return {"success": "True"}
