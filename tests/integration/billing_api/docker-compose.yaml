@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  app:
+    build: ./../../billing
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: curl --fail http://app:8000/api/health/ || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  tests:
+    build: .
+    env_file:
+      - test.env
+    entrypoint: >
+      sh -c "python3 -m pytest -v"
