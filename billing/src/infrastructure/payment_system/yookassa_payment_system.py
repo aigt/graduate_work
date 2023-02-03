@@ -74,7 +74,7 @@ class YookassaPaymentSystem(PaymentSystem):
         Returns:
             str: Идентификатор.
         """
-        return "yookassa"
+        return "fb8dd233-d6ab-4c49-930c-ddfc59ec21d3"
 
     async def create_payment(self, amount: ExternalPaymentAmount) -> ExternalPayment:
         """Создать платёж.
