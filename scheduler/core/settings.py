@@ -6,7 +6,11 @@ from pydantic import BaseSettings, Field
 class Settings(BaseSettings):
     """Переменные окружения."""
 
-    postgres: str = Field("dbname = pyment_history user=app password=postgres host=localhost port=5432")
+    postgres_host: str = Field("localhost")
+    postgres_port: int = Field(5432)
+    postgres_db: str = Field("payment_history")
+    postgres_user: str = Field("app")
+    postgres_password: str = Field("postgres")
     interval: int = Field(600)
 
 
