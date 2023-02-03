@@ -1,3 +1,5 @@
+import json
+
 from psycopg import AsyncConnection
 from psycopg.rows import dict_row
 
@@ -43,7 +45,14 @@ class PostgresPaymentRepository(PaymentRepository):
         Returns:
             Payment: Платёж.
         """
-        external_payment = external_payment[0]
+        payment_external_body = json.dumps(
+            {
+                "id": external_payment.id.id,
+                "amount": external_payment.amount.amount,
+                "status": external_payment.status.status,
+                "confirm_url": external_payment.confirm_url.id,
+            },
+        )
         async with self.connect.cursor() as cur:
             await cur.execute(
                 """
@@ -55,18 +64,19 @@ class PostgresPaymentRepository(PaymentRepository):
                     user_id=user_id.id,
                     amount=external_payment.amount.amount,
                     external_id=external_payment.id.id,
-                    external_payment=external_payment.to_json(),
+                    external_payment=payment_external_body,
                     refunded=False,
                     system_id=system_id.id,
                 ),
             )
             await self.connect.commit()
+
         return Payment(
             id=PaymentId(external_payment.id.id),
             user_id=user_id,
             amount=PaymentAmount(external_payment.amount.amount),
             external_id=PaymentExternalId(external_payment.id.id),
-            external_payment=PaymentExternalBody(external_payment.to_json()),
+            external_payment=PaymentExternalBody(payment_external_body),
             refunded=PaymentRefunded(False),
             system_id=system_id,
         )

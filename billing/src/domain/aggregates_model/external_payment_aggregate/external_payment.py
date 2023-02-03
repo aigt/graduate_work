@@ -1,5 +1,3 @@
-import json
-
 from domain.aggregates_model.external_payment_aggregate.external_payment_amount import (
     ExternalPaymentAmount,
     ExternalPaymentAmountField,
@@ -37,18 +35,3 @@ class ExternalPayment:
         self.amount = amount  # noqa: WPS601
         self.status = status  # noqa: WPS601
         self.confirm_url = confirm_url  # noqa: WPS601
-
-    def to_json(self) -> str:
-        """Форматирование в json.
-
-        Returns:
-            json(str): json.
-        """
-        return json.dumps(
-            {
-                "id": self.id.id,
-                "amount": self.amount.amount,
-                "status": self.status.status,
-                "confirm_url": self.confirm_url.id,
-            },
-        )
