@@ -1,9 +1,5 @@
 from abc import ABC, abstractmethod
 
-from billing.src.domain.aggregates_model.payment_aggregate.payment_external_id import (
-    PaymentExternalId,
-)
-
 from domain.aggregates_model.external_payment_aggregate.external_payment import (
     ExternalPayment,
 )
@@ -24,6 +20,9 @@ from domain.aggregates_model.external_refund_aggregate.external_refund_id import
 )
 from domain.aggregates_model.external_refund_aggregate.external_refund_payment_id import (
     ExternalRefundPaymentId,
+)
+from domain.aggregates_model.payment_aggregate.payment_external_id import (
+    PaymentExternalId,
 )
 from domain.aggregates_model.payment_aggregate.payment_reposytory import (
     PaymentRepository,
