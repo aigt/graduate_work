@@ -60,6 +60,7 @@ per-file-ignores =
     billing/src/infrastructure/payment_system/yookassa_payment_system.py: WPS201 WPS221
     billing/src/domain/services/auth_service.py: WPS531
     tests/integration/billing_api/settings.py: WPS432
+    tests/integration/billing_api/utils/get_jwt.py: WPS432 WPS301 WPS326
 
 exclude =
     # No need to traverse our git directory
