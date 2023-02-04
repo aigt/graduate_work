@@ -82,6 +82,8 @@ exclude =
     dist,
     billing/src/infrastructure/auth_service/auth_pb2.py,
     billing/src/infrastructure/auth_service/auth_pb2_grpc.py,
+    scheduler/src/external_services/auth_service/auth_pb2.py,
+    scheduler/src/external_services/auth_service/auth_pb2_grpc.py,
 
 
 max-complexity = 10

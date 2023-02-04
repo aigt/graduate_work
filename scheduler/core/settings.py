@@ -15,6 +15,8 @@ class Settings(BaseSettings):
 
     notification_url: str = Field("http://localhost/api/v1/add_notification/")
 
+    authorization_grpc_address: str = Field("[::]:5001")
+
 
 @lru_cache()
 def get_settings() -> Settings:
