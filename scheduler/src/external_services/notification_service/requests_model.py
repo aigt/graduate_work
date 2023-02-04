@@ -1,24 +1,24 @@
 import enum
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel
 
 
-class NotificationUrgency(enum.Enum):
+class NotificationUrgency(str, enum.Enum):
     """Типы срочности уведомления."""
 
     immediate = "immediate"
     usual = "usual"
 
 
-class NotificationScale(enum.Enum):
+class NotificationScale(str, enum.Enum):
     """Типы массовости уведомления."""
 
     bulk = "bulk"
     individual = "individual"
 
 
-class NotificationType(enum.Enum):
+class NotificationType(str, enum.Enum):
     """Типы уведомлений."""
 
     show_subs = "show_subs"
@@ -40,4 +40,4 @@ class Notification(BaseModel):
     meta: Meta
     type: NotificationType
     custom_template: Optional[Any]
-    fields: Dict[str, str]
+    fields: Dict[str, List[str]]

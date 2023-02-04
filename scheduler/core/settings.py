@@ -13,9 +13,9 @@ class Settings(BaseSettings):
     postgres_password: str = Field("postgres")
     interval: int = Field(600)
 
-    notification_url: str = Field("http://localhost/api/v1/add_notification/")
+    notification_url: str = Field("http://localhost:8000/api/v1/add_notification/")
 
-    authorization_grpc_address: str = Field("[::]:5001")
+    authorization_grpc_address: str = Field("[::]:443")
 
 
 @lru_cache()

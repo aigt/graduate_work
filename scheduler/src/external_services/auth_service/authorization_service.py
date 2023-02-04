@@ -1,10 +1,12 @@
 from enum import Enum
 
 from grpc import insecure_channel
-from infrastructure.auth_service.auth_pb2 import ResponseStatuses
 
 from src.external_services.auth_service.auth_exceptions import RoleChangeError
-from src.external_services.auth_service.auth_pb2 import ChangeRoleRequest
+from src.external_services.auth_service.auth_pb2 import (
+    ChangeRoleRequest,
+    ResponseStatuses,
+)
 from src.external_services.auth_service.auth_pb2_grpc import AuthNotifyStub
 
 
