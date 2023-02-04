@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     postgres_password: str = Field("postgres")
     interval: int = Field(600)
 
+    notification_url: str = Field("http://localhost/api/v1/add_notification/")
+
 
 @lru_cache()
 def get_settings() -> Settings:
