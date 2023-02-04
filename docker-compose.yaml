@@ -5,6 +5,8 @@ services:
     build: ./billing
     expose:
       - "8000"
+    ports:
+      - "8000:8000"
     env_file:
       - ./env_files/billing.env
     healthcheck:
@@ -22,7 +24,7 @@ services:
     volumes:
       - ./payment_db_init:/docker-entrypoint-initdb.d:ro
     env_file:
-      - env_files/pyment_db.env
+      - env_files/payment_db.env
     healthcheck:
       test:
         [

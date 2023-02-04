@@ -16,8 +16,10 @@ python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
 grpcio = "1.46.1"
 grpcio-tools = "1.46.1"
+stripe = "^5.0.0"
 aiohttp = "^3.8.3"
 yookassa = "^2.3.4"
+stripe = "^5.0.0"
 psycopg = "^3.1.8"
 psycopg-binary = "^3.1.8"
 

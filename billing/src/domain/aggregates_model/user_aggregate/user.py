@@ -22,12 +22,15 @@ class User:
         self,
         payment_system: PaymentSystem,
         payment_repository: PaymentRepository,
-    ) -> None:
+    ) -> ExternalPayment:
         """Оплатить подписку.
 
         Args:
             payment_system (PaymentSystem): Платёжная система.
             payment_repository (PaymentRepository): Репозторий платежей.
+
+        Returns:
+            ExternalPayment: Данные о созданном платеже.
         """
         ext_payment: ExternalPayment = await payment_system.create_payment()
         await payment_repository.create_payment(
@@ -35,3 +38,4 @@ class User:
             external_payment=ext_payment,
             system_id=PaymentSystemId(id=payment_system.system_id),
         )
+        return ext_payment

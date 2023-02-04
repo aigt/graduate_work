@@ -1,11 +1,10 @@
-from abc import ABC, abstractmethod
 from typing import Optional, Type, TypeVar
 
 T = TypeVar("T")  # noqa: WPS111
 V = TypeVar("V")  # noqa: WPS111
 
 
-class ValidatebleDescriptor(ABC):
+class ValidatebleDescriptor:
     """Валидируемый дескриптор."""
 
     def __set_name__(self, owner: Type[T], name: str) -> None:
@@ -70,7 +69,6 @@ class ValidatebleDescriptor(ABC):
         # Присвоение значения
         setattr(instance, self.private_name, new_value)
 
-    @abstractmethod
     def validate(self, value_to_validate: V) -> None:
         """Абстрактный метод валидации.
 

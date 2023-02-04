@@ -49,6 +49,9 @@ per-file-ignores =
     # WPS323 Found `%` string formatting
     # WPS407 Found mutable module constant
     # WPS432 Found magic number: ...
+    # D301 Use r""" if any backslashes in a docstring
+    billing/src/web_api/routers/v1/endpoints/stripe.py: D301
+    billing/src/web_api/routers/v1/endpoints/payments.py: D301
     billing/src/infrastructure/notification_system/request_model.py: WPS600 WPS110
     billing/src/infrastructure/notification_system/movie_notification_system.py: WPS600 WPS110
     billing/src/infrastructure/auth_service/movie_auth_service.py: WPS531
@@ -58,6 +61,7 @@ per-file-ignores =
     billing/src/domain/aggregates_model/external_refund_aggregate/external_refund_payment_id.py: WPS347 DAR401
     billing/src/domain/aggregates_model/external_refund_aggregate/external_refund_status.py: WPS347 DAR401
     billing/src/infrastructure/payment_system/yookassa_payment_system.py: WPS201 WPS221
+    billing/src/infrastructure/payment_system/stripe_payment_system.py: WPS201 WPS221
     billing/src/domain/services/auth_service.py: WPS531
     billing/src/infrastructure/payment_repository/payment_reposytory.py: WPS462 S608 WPS201
     scheduler/core/settings.py: WPS432
