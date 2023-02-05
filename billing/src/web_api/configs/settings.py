@@ -22,6 +22,14 @@ class Settings(BaseSettings):
 
     # Stripe
     endpoint_secret: str = ""
+    stripe_secret_key: str = ""
+
+    stripe_success_url: str = "localhost"
+    stripe_cancel_url: str = "localhost"
+    stripe_limit_per_page: int = 100
 
     # Auth service
     auth_service_host = "localhost"
+
+    # Auth service
+    notification_service_host = "localhost"
