@@ -35,5 +35,8 @@ exclude = [
 files = "./**/*.py"
 
 [[tool.mypy.overrides]]
-module = "billing.src.infrastructure.auth_service.*"
+module = [
+    "billing.src.infrastructure.auth_service.*",
+    "scheduler.src.external_services.auth_service.*"
+]
 ignore_errors = true
