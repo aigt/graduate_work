@@ -36,6 +36,11 @@ repos:
     hooks:
       - id: autoflake
 
+  - repo: https://gitlab.com/smop/pre-commit-hooks
+    rev: master
+    hooks:
+      - id: check-poetry
+
   - repo: https://github.com/hadolint/hadolint
     rev: v2.12.0
     hooks:
