@@ -1,4 +1,5 @@
 import time
+from datetime import timedelta
 from logging import getLogger
 
 from src.external_services.auth_service.authorization_service import (
@@ -23,11 +24,11 @@ class Scheduler:
         self.notification = notification_service
         self.authorization = authorization_service
 
-    def run(self, interval: int) -> None:
+    def run(self, interval: timedelta) -> None:
         """Запуск проверки статусов с интервалом.
 
         Args:
-            interval(int): Промежуток между проверками в секундах.
+            interval(timedelta): Промежуток между проверками в секундах.
         """
         while True:
             for users in self.repo.get_expired_subscribe_users():
@@ -36,5 +37,5 @@ class Scheduler:
                 for user_id in ids:
                     self.authorization.del_subscriber_status(user_id)
             self.repo.update_expired_subscribe_users()
-            getLogger(__name__).info(f"After update - sleep {interval} seconds")
-            time.sleep(interval)
+            getLogger(__name__).info(f"After update - sleep {interval}")
+            time.sleep(interval.seconds)
