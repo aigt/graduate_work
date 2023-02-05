@@ -12,6 +12,7 @@ class JWTService:
     """JWT сервис."""
 
     def __init__(self, token: str, auth_rsa_public_key: str) -> None:
+        logging.info(token)
         self._token = token
         self._auth_rsa_public_key = auth_rsa_public_key
 
