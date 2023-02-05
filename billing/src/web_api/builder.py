@@ -51,12 +51,12 @@ def build() -> FastAPI:
     )
     app.include_router(
         stripe.router,
-        prefix=settings.api_stripe,
+        prefix=settings.api_v1_str + settings.api_stripe,
         tags=[openapi_settings.api_stripe_tag],
     )
     app.include_router(
         payments.router,
-        prefix=settings.api_payments,
+        prefix=settings.api_v1_str + settings.api_payments,
         tags=[openapi_settings.api_payments_tag],
     )
 
