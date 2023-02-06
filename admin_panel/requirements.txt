@@ -1,4 +1,4 @@
-django==4.0.4
+django==4.0.9
 django-split-settings==1.1.0
 flake8==4.0
 flake8-isort==4.2.0
