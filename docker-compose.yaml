@@ -5,6 +5,8 @@ services:
     build: ./billing
     expose:
       - "8000"
+    ports:
+      - "8000:8000"
     env_file:
       - ./env_files/billing.env
     healthcheck:
@@ -22,7 +24,7 @@ services:
     volumes:
       - ./payment_db_init:/docker-entrypoint-initdb.d:ro
     env_file:
-      - env_files/pyment_db.env
+      - env_files/payment_db.env
     healthcheck:
       test:
         [
@@ -32,6 +34,15 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  scheduler:
+    build: ./scheduler
+    networks:
+      - history_net
+    env_file:
+      - ./env_files/scheduler.env
+    depends_on:
+      - payment_db
 
 networks:
   history_net:

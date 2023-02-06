@@ -49,6 +49,9 @@ per-file-ignores =
     # WPS323 Found `%` string formatting
     # WPS407 Found mutable module constant
     # WPS432 Found magic number: ...
+    # D301 Use r""" if any backslashes in a docstring
+    billing/src/web_api/routers/v1/endpoints/stripe.py: D301
+    billing/src/web_api/routers/v1/endpoints/payments.py: D301
     billing/src/infrastructure/notification_system/request_model.py: WPS600 WPS110
     billing/src/infrastructure/notification_system/movie_notification_system.py: WPS600 WPS110
     billing/src/infrastructure/auth_service/movie_auth_service.py: WPS531
@@ -58,9 +61,14 @@ per-file-ignores =
     billing/src/domain/aggregates_model/external_refund_aggregate/external_refund_payment_id.py: WPS347 DAR401
     billing/src/domain/aggregates_model/external_refund_aggregate/external_refund_status.py: WPS347 DAR401
     billing/src/infrastructure/payment_system/yookassa_payment_system.py: WPS201 WPS221
+    billing/src/infrastructure/payment_system/stripe_payment_system.py: WPS201 WPS221
     billing/src/domain/services/auth_service.py: WPS531
     tests/integration/billing_api/settings.py: WPS432
     tests/integration/billing_api/utils/get_jwt.py: WPS432 WPS301 WPS326
+    billing/src/infrastructure/payment_repository/payment_reposytory.py: WPS462 S608 WPS201
+    scheduler/core/settings.py: WPS432
+    scheduler/src/repositories/postgres.py: WPS432 WPS323 WPS332
+    scheduler/src/external_services/notification_service/requests_model.py: WPS110 WPS600
 
 exclude =
     # No need to traverse our git directory
@@ -83,6 +91,9 @@ exclude =
     tests/integration/billing_api/grpc_test_server/auth_pb2_grpc.py
     tests/integration/billing_api/grpc_test_server/auth_pb2.py
     tests/integration/billing_api/grpc_test_server/server.py
+    scheduler/src/external_services/auth_service/auth_pb2.py,
+    scheduler/src/external_services/auth_service/auth_pb2_grpc.py,
+
 
 max-complexity = 10
 

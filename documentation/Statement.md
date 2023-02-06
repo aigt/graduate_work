@@ -23,7 +23,7 @@
 
 В общем схема сервиса выглядит следующим образом:
 
-<img src="Billing_Service_Schema.png" width="100%" height="100%">
+<img src="Project_Context_Schema.png" width="100%" height="100%">
 
 
 ### Приложение Billing

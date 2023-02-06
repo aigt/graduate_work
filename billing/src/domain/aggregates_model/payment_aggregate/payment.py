@@ -41,7 +41,7 @@ class Payment:
 
     def __init__(
         self,
-        id: PaymentUserId,  # noqa: WPS125
+        id: PaymentId,  # noqa: WPS125
         user_id: PaymentUserId,
         amount: PaymentAmount,
         external_id: PaymentExternalId,
