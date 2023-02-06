@@ -27,13 +27,16 @@ def get_payment_repository() -> PaymentRepository:
     return PostgresPaymentRepository()
 
 
-def get_notification_service() -> NotificationService:
+def get_notification_service(settings: Settings = Depends(get_settings)) -> NotificationService:
     """Фабрика нотификационных сервисов.
+
+    Args:
+        settings (Settings): Depends(get_settings).
 
     Returns:
         NotificationService: Нотификационный сервис.
     """
-    return MovieNotificationService()
+    return MovieNotificationService(settings.notification_service_host)
 
 
 def get_auth_service(settings: Settings = Depends(get_settings)) -> AuthService:
@@ -52,6 +55,7 @@ def get_payment_system(
     payment_repository: PaymentRepository = Depends(get_payment_repository),
     notification_service: AuthService = Depends(get_notification_service),
     auth_service: AuthService = Depends(get_auth_service),
+    settings: Settings = Depends(get_settings),
 ) -> PaymentSystem:
     """Фабрика платёжных систем.
 
@@ -59,6 +63,7 @@ def get_payment_system(
         payment_repository (PaymentRepository): Depends(get_payment_repository).
         notification_service (AuthService): Depends(get_notification_service).
         auth_service (AuthService): Depends(get_auth_service).
+        settings (Settings): Depends(get_settings).
 
     Returns:
         PaymentSystem: Платёжная система.
@@ -67,4 +72,8 @@ def get_payment_system(
         payment_repository=payment_repository,
         auth_service=auth_service,
         notification_service=notification_service,
+        success_url=settings.stripe_success_url,
+        cancel_url=settings.stripe_cancel_url,
+        stripe_secret_key=settings.stripe_secret_key,
+        limit=settings.stripe_limit_per_page,
     )

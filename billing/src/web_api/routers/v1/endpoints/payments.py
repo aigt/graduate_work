@@ -17,7 +17,7 @@ from web_api.dependencies.infrastructure import (
 router = APIRouter()
 
 
-@router.post("/pay_for_subscription", status_code=status.HTTP_200_OK)
+@router.get("/pay_for_subscription", status_code=status.HTTP_200_OK)
 async def pay_for_subscription(
     user: User = Depends(get_user),
     payment_system: PaymentSystem = Depends(get_payment_system),
