@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
-from domain.seed_work.descriptors import ValidatebleDescriptor
+from domain.seed_work.descriptors import V, ValidatebleDescriptor
 
 
 class ExternalRefundStatusEnum(Enum):
@@ -16,6 +16,15 @@ class ExternalRefundStatusEnum(Enum):
 
 class ExternalRefundStatusField(ValidatebleDescriptor):
     """Дескриптор поля статуса возврата."""
+
+    def validate(self, value_to_validate: V) -> None:
+        """Метод валидации.
+
+        Args:
+            value_to_validate (V): Значение.
+        """
+        if not isinstance(value_to_validate, ExternalRefundStatus):
+            raise TypeError()
 
 
 @dataclass(frozen=True, slots=True)

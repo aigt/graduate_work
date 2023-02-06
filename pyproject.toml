@@ -4,11 +4,13 @@ version = "1.0.0"
 description = ""
 authors = [""]
 readme = "README.md"
+[tool.poetry.dependencies]
 
 
 [tool.black]
 line-length = 120
 include = '\.pyi?$'
+exclude = 'auth_pb2.py'
 
 [tool.isort]
 profile = "black"
@@ -28,10 +30,13 @@ ignore_errors = false
 exclude = [
     "venv",
     ".vscode",
-    "generator/src/grpc/**/*.py",
+    "billing/src/infrastructure/auth_service/**/*.py",
 ]
 files = "./**/*.py"
 
 [[tool.mypy.overrides]]
-module = "generator.src.grpc.*"
+module = [
+    "billing.src.infrastructure.auth_service.*",
+    "scheduler.src.external_services.auth_service.*"
+]
 ignore_errors = true
