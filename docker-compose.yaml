@@ -35,6 +35,21 @@ services:
       timeout: 5s
       retries: 5
 
+  admin_panel:
+    build: admin_panel
+    volumes:
+      - static_data:/opt/app/static/
+    env_file:
+      - env_files/admin.env
+    ports:
+      - "8000:8000"
+    networks:
+      - history_net
+    depends_on:
+      payment_db:
+        condition: service_healthy
+
+
   scheduler:
     build: ./scheduler
     networks:
@@ -46,3 +61,6 @@ services:
 
 networks:
   history_net:
+
+volumes:
+  static_data:
