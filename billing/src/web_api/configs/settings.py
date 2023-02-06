@@ -1,4 +1,4 @@
-from pydantic import BaseSettings, Field
+from pydantic import BaseSettings, Field, PostgresDsn
 
 
 class Settings(BaseSettings):
@@ -33,3 +33,8 @@ class Settings(BaseSettings):
 
     # Auth service
     notification_service_host = "localhost"
+
+    # Настройки PostgresDB
+    payments_postgres_dsn: PostgresDsn = Field(
+        default="postgresql://app:postgres@localhost:5432/postgres",
+    )

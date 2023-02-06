@@ -1,4 +1,5 @@
 from fastapi import Depends
+from psycopg import AsyncConnection
 
 from domain.aggregates_model.payment_aggregate.payment_reposytory import (
     PaymentRepository,
@@ -16,15 +17,19 @@ from infrastructure.payment_repository.payment_reposytory import (
 from infrastructure.payment_system.stripe_payment_system import StripePaymentSystem
 from web_api.configs.settings import Settings
 from web_api.dependencies.common import get_settings
+from web_api.dependencies.db import get_postgres_connection
 
 
-def get_payment_repository() -> PaymentRepository:
+def get_payment_repository(connection: AsyncConnection = Depends(get_postgres_connection)) -> PaymentRepository:
     """Фабрика репозиториев платежей.
+
+    Args:
+        connection (AsyncConnection): Depends(get_postgres_connection).
 
     Returns:
         PaymentRepository: Репозиторий платежей.
     """
-    return PostgresPaymentRepository()
+    return PostgresPaymentRepository(connect=connection)
 
 
 def get_notification_service(settings: Settings = Depends(get_settings)) -> NotificationService:

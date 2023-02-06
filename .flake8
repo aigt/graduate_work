@@ -17,6 +17,8 @@ ignore =
     RST301,
     # WPS115 Found upper-case constant in a class: ...
     WPS115,
+    # WPS201 Found module with too many imports: 13 > 12
+    WPS201,
     # WPS210 Found too many local variables: 7 > 5
     WPS210,
     # WPS211 Found too many arguments: 6 > 5
