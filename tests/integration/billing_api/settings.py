@@ -11,10 +11,10 @@ class Settings(BaseSettings):
 
     postgres_user: str = Field("app")
     postgres_password: str = Field("postgres")
-    postgres_users_host: str = Field("localhost")
+    postgres_host: str = Field("localhost")
     postgres_port: int = Field(5432)
 
-    payments_db: str = Field("payments")
+    postgres_db: str = Field("payment_history")
 
     auth_private_key = """-----BEGIN RSA PRIVATE KEY-----
 MIICXgIBAAKBgQDN+p9a9oMyqRzkae8yLdJcEK0O0WesH6JiMz+KDrpUwAoAM/KP
