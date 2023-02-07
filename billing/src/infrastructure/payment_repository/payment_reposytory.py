@@ -21,6 +21,7 @@ from domain.aggregates_model.payment_aggregate.payment_reposytory import (
 )
 from domain.aggregates_model.payment_aggregate.payment_system_id import PaymentSystemId
 from domain.aggregates_model.payment_aggregate.payment_user_id import PaymentUserId
+from domain.aggregates_model.user_aggregate.user_id import UserId
 
 
 class PostgresPaymentRepository(PaymentRepository):
@@ -48,8 +49,8 @@ class PostgresPaymentRepository(PaymentRepository):
         payment_external_body = json.dumps(
             {
                 "id": external_payment.id.id,
-                "amount": external_payment.amount.amount,
-                "status": external_payment.status.status,
+                "amount": str(external_payment.amount.amount),
+                "status": str(external_payment.status.status),
                 "confirm_url": external_payment.confirm_url.id,
             },
         )
@@ -109,4 +110,55 @@ class PostgresPaymentRepository(PaymentRepository):
                 external_payment=PaymentExternalBody(payment.get("external_payment")),
                 refunded=PaymentRefunded(payment.get("refunded")),
                 system_id=PaymentSystemId(payment.get("system_id")),
+            )
+
+    async def get_last_by_user_id(self, user_id: UserId) -> Payment:
+        """Найти последний платёж по идентификатору пользователя.
+
+        Args:
+            user_id (UserId): Идентификатор пользователя.
+
+        Returns:
+            Payment: Платёж.
+        """
+        async with self.connect.cursor(row_factory=dict_row) as cur:
+            await cur.execute(
+                """
+                SELECT *
+                FROM payments.payments
+                WHERE user_id = '{user_id}'
+                ORDER BY created_at DESC
+                """.format(
+                    user_id=user_id.id,
+                ),
+            )
+            payment: dict = await cur.fetchone()
+            return Payment(
+                id=PaymentId(payment.get("id")),
+                user_id=PaymentUserId(payment.get("user_id")),
+                amount=PaymentAmount(payment.get("amount")),
+                external_id=PaymentExternalId(payment.get("external_id")),
+                external_payment=PaymentExternalBody(payment.get("external_payment")),
+                refunded=PaymentRefunded(payment.get("refunded")),
+                system_id=PaymentSystemId(payment.get("system_id")),
+            )
+
+    async def refund_payment(
+        self,
+        payment_id: PaymentId,
+    ) -> None:
+        """Пометить платёж как возвращённый.
+
+        Args:
+            payment_id (PaymentId): Идентификатор пользователя совершившего платёж.
+        """
+        async with self.connect.cursor(row_factory=dict_row) as cur:
+            await cur.execute(
+                """
+                UPDATE  payments.payments
+                SET refunded = true
+                WHERE id = '{payment_id}'
+                """.format(
+                    payment_id=payment_id.id,
+                ),
             )
