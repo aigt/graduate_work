@@ -1,6 +1,3 @@
-from typing import Union
-
-import fastapi
 from fastapi import Security
 from fastapi.security.http import HTTPAuthorizationCredentials, HTTPBearer
 
@@ -12,24 +9,29 @@ class JWT:
 
     bearer = HTTPBearer(auto_error=False)
 
-    async def __call__(
+    def __init__(
         self,
         auth_credentials: HTTPAuthorizationCredentials = Security(bearer),
-    ) -> Union[str, fastapi.HTTPException]:
-        """Получить токен из запроса.
+    ) -> None:
+        """__init__.
 
         Args:
             auth_credentials (HTTPAuthorizationCredentials): Авторизационные реквизиты. Defaults to Security(bearer).
+        """
+        self._auth_credentials = auth_credentials
+
+    def token(self) -> str:
+        """Получить токен из запроса.
 
         Raises:
             ForbiddenError: Авторизационных реквизитов не получено.
             ForbiddenError: Авторизационные реквизиты не корректны.
 
         Returns:
-            str: Токен.
+            str: JWT.
         """
-        if auth_credentials is None:
+        if self._auth_credentials is None:
             raise ForbiddenError(detail="Not authenticated")
-        if auth_credentials.credentials is None:
+        if self._auth_credentials.credentials is None:
             raise ForbiddenError(detail="Invalid authentication credentials")
-        return auth_credentials.credentials
+        return self._auth_credentials.credentials  # type: ignore

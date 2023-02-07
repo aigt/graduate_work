@@ -1,4 +1,4 @@
-from pydantic import BaseSettings, Field
+from pydantic import BaseSettings, Field, PostgresDsn
 
 
 class Settings(BaseSettings):
@@ -22,6 +22,19 @@ class Settings(BaseSettings):
 
     # Stripe
     endpoint_secret: str = ""
+    stripe_secret_key: str = ""
+
+    stripe_success_url: str = "localhost"
+    stripe_cancel_url: str = "localhost"
+    stripe_limit_per_page: int = 100
 
     # Auth service
     auth_service_host = "localhost"
+
+    # Auth service
+    notification_service_host = "localhost"
+
+    # Настройки PostgresDB
+    payments_postgres_dsn: PostgresDsn = Field(
+        default="postgresql://app:postgres@localhost:5432/postgres",
+    )
