@@ -9,11 +9,16 @@ services:
       - "8000:8000"
     env_file:
       - ./env_files/billing.env
+    networks:
+      - history_net
     healthcheck:
       test: curl --fail http://billing:8000/api/health/ || exit 1
       interval: 10s
       timeout: 5s
       retries: 20
+    depends_on:
+      payment_db:
+        condition: service_healthy
 
   payment_db:
     image: postgres:15.0-alpine
@@ -21,8 +26,12 @@ services:
       - "5432"
     networks:
       - history_net
+    environment:
+      - POSTGRES_HOST=payment_db
+      - POSTGRES_PORT=5432
     volumes:
-      - ./payment_db_init:/docker-entrypoint-initdb.d:ro
+      - payment_vol:/var/lib/postgresql/data/
+      - ./payment_db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
     env_file:
       - env_files/payment_db.env
     healthcheck:
@@ -41,14 +50,13 @@ services:
       - static_data:/opt/app/static/
     env_file:
       - env_files/admin.env
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     networks:
       - history_net
     depends_on:
       payment_db:
         condition: service_healthy
-
 
   scheduler:
     build: ./scheduler
@@ -62,5 +70,7 @@ services:
 networks:
   history_net:
 
+
 volumes:
   static_data:
+  payment_vol:

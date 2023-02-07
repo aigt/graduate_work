@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
+from infrastructure.db.postgres import PostgresDB
 from web_api.configs import logger
 from web_api.configs.openapi import OpenAPISettings
+from web_api.dependencies import db
 from web_api.dependencies.common import get_settings
 from web_api.errors.handlers import install_exception_handlers
 from web_api.routers import health
@@ -11,10 +13,14 @@ from web_api.routers.v1.endpoints import payments, stripe
 
 async def startup_event() -> None:
     """Функция выполняемая перед запуском приложения."""
+    settings = get_settings()
+    db.postgres = PostgresDB(postgres_dsn=settings.payments_postgres_dsn)
+    await db.postgres.init_connection()
 
 
 async def shutdown_event() -> None:
     """Функция выполняемая перед завершением приложения."""
+    db.postgres.close_connection()
 
 
 def build() -> FastAPI:
