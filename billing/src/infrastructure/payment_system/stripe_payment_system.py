@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import stripe
 
 from domain.aggregates_model.external_payment_aggregate.external_payment import (
@@ -6,10 +8,14 @@ from domain.aggregates_model.external_payment_aggregate.external_payment import 
 from domain.aggregates_model.external_payment_aggregate.external_payment_amount import (
     ExternalPaymentAmount,
 )
+from domain.aggregates_model.external_payment_aggregate.external_payment_confirm_url import (
+    ExternalPaymentConfirmUrl,
+)
 from domain.aggregates_model.external_payment_aggregate.external_payment_id import (
     ExternalPaymentId,
 )
 from domain.aggregates_model.external_payment_aggregate.external_payment_status import (
+    ExternalPaymentStatus,
     ExternalPaymentStatusEnum,
 )
 from domain.aggregates_model.external_refund_aggregate.external_refund import (
@@ -80,10 +86,10 @@ class StripePaymentSystem(PaymentSystem):
                 {
                     "price_data": {
                         "currency": "usd",
-                        "unit_amount": amount,
+                        "unit_amount": amount.amount,
                         "product_data": {
                             "name": "Subscription",
-                            "description": "",
+                            "description": "some description",
                         },
                     },
                     "quantity": 1,
@@ -94,10 +100,10 @@ class StripePaymentSystem(PaymentSystem):
             cancel_url=self.cancel_url,
         )
         return ExternalPayment(
-            id=session.id,
-            amount=session.amount_total,
-            status=ExternalPaymentStatusEnum.PENDING,
-            confirm_url=session.url,
+            id=ExternalPaymentId(id=session.id),
+            amount=ExternalPaymentAmount(amount=Decimal(session.amount_total)),
+            status=ExternalPaymentStatus(status=ExternalPaymentStatusEnum.PENDING),
+            confirm_url=ExternalPaymentConfirmUrl(id=session.url),
         )
 
     async def payments(self) -> list[ExternalPayment]:
