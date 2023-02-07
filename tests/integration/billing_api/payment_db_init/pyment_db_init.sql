@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS payments.subscribers(
 
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id uuid NOT NULL,
-    subsrciber_status boolean NOT NULL,
+    subscriber_status boolean NOT NULL,
     date_subscribe TIMESTAMP WITH TIME ZONE NOT NULL
 
 );

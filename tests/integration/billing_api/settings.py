@@ -7,7 +7,7 @@ from pydantic.fields import Field
 class Settings(BaseSettings):
     """Переменные окружения."""
 
-    url: str = Field("http://localhost:8000")
+    url: str = Field("http://localhost:8000/api/v1")
 
     postgres_user: str = Field("app")
     postgres_password: str = Field("postgres")

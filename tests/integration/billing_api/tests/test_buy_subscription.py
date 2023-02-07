@@ -23,7 +23,7 @@ def test_buy_unauthorized(http_con: Session) -> None:
         http_con(Session): http сессия
     """
     body = None
-    response = http_con.post(
+    response = http_con.get(
         f"{settings.url}/payments/pay_for_subscription",
         json=body,
     )
