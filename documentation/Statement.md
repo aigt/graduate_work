@@ -157,6 +157,7 @@ erDiagram
         external_payment jsonb
         refunded boolean
         system_id uuid
+        created_at datetime
     }
 
     subscribers {
