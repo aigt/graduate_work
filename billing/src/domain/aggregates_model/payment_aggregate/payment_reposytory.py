@@ -7,8 +7,10 @@ from domain.aggregates_model.payment_aggregate.payment import Payment
 from domain.aggregates_model.payment_aggregate.payment_external_id import (
     PaymentExternalId,
 )
+from domain.aggregates_model.payment_aggregate.payment_id import PaymentId
 from domain.aggregates_model.payment_aggregate.payment_system_id import PaymentSystemId
 from domain.aggregates_model.payment_aggregate.payment_user_id import PaymentUserId
+from domain.aggregates_model.user_aggregate.user_id import UserId
 
 
 class PaymentRepository(ABC):
@@ -41,4 +43,26 @@ class PaymentRepository(ABC):
 
         Returns:
             Payment: Платёж.
+        """
+
+    @abstractmethod
+    async def get_last_by_user_id(self, user_id: UserId) -> Payment:
+        """Найти последний платёж по идентификатору пользователя.
+
+        Args:
+            user_id (UserId): Идентификатор пользователя.
+
+        Returns:
+            Payment: Платёж.
+        """
+
+    @abstractmethod
+    async def refund_payment(
+        self,
+        payment_id: PaymentId,
+    ) -> None:
+        """Пометить платёж как возвращённый.
+
+        Args:
+            payment_id (PaymentId): Идентификатор пользователя совершившего платёж.
         """
