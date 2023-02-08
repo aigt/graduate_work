@@ -50,8 +50,8 @@ services:
       - static_data:/opt/app/static/
     env_file:
       - env_files/admin.env
-    expose:
-      - "8000"
+    ports:
+      - "8001:8001"
     networks:
       - history_net
     depends_on:
