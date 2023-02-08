@@ -61,7 +61,7 @@ class PaymentSystem(ABC):
 
     @property
     @abstractmethod
-    async def system_id(self) -> str:
+    def system_id(self) -> str:
         """Идентификатор платёжной системы.
 
         Returns:

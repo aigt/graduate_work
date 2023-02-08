@@ -63,7 +63,7 @@ class StripePaymentSystem(PaymentSystem):
         stripe.api_key = stripe_secret_key
 
     @property
-    async def system_id(self) -> str:
+    def system_id(self) -> str:
         """Идентификатор платёжной системы.
 
         Returns:
