@@ -86,7 +86,7 @@ class StripePaymentSystem(PaymentSystem):
                 {
                     "price_data": {
                         "currency": "usd",
-                        "unit_amount": amount.amount,
+                        "unit_amount": amount.amount * Decimal("100"),  # Значение в центах
                         "product_data": {
                             "name": "Subscription",
                             "description": "some description",

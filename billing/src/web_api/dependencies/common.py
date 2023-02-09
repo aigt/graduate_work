@@ -1,3 +1,7 @@
+import logging
+import os
+
+from cachetools import cached  # type: ignore
 from fastapi import Depends
 
 from web_api.configs.settings import Settings
@@ -5,12 +9,14 @@ from web_api.dependencies.jwt import JWT
 from web_api.services.jwt import JWTService
 
 
+@cached(cache={})
 def get_settings() -> Settings:
     """Фабрика настроек.
 
     Returns:
         Settings: Класс с настройками приложения.
     """
+    logging.info("Creating and caching Settings, pid: {pid}".format(pid=os.getpid()))
     return Settings()
 
 
