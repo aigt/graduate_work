@@ -46,8 +46,6 @@ services:
       - env_files/admin.env
     expose:
       - "8000"
-    ports:
-      - "8001:8000"
     depends_on:
       payment_db:
         condition: service_healthy
@@ -72,7 +70,6 @@ services:
         condition: service_healthy
     ports:
       - "80:8000"
-      - "443:5001"
 
 volumes:
   static_vol:
