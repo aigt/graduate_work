@@ -5,12 +5,8 @@ services:
     build: ./billing
     expose:
       - "8000"
-    ports:
-      - "8000:8000"
     env_file:
       - ./env_files/billing.env
-    networks:
-      - history_net
     healthcheck:
       test: curl --fail http://billing:8000/api/health/ || exit 1
       interval: 10s
@@ -24,8 +20,6 @@ services:
     image: postgres:15.0-alpine
     expose:
       - "5432"
-    networks:
-      - history_net
     environment:
       - POSTGRES_HOST=payment_db
       - POSTGRES_PORT=5432
@@ -47,32 +41,40 @@ services:
   admin_panel:
     build: admin_panel
     volumes:
-      - static_data:/opt/app/static/
+      - static_vol:/opt/app/static/
     env_file:
       - env_files/admin.env
     expose:
       - "8000"
     ports:
       - "8001:8000"
-    networks:
-      - history_net
     depends_on:
       payment_db:
         condition: service_healthy
 
   scheduler:
     build: ./scheduler
-    networks:
-      - history_net
     env_file:
       - ./env_files/scheduler.env
     depends_on:
-      - payment_db
+      payment_db:
+        condition: service_healthy
 
-networks:
-  history_net:
-
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/configs:/etc/nginx/conf.d:ro
+      - access_log_vol:/var/log/nginx
+      - static_vol:/data/static:ro
+    depends_on:
+      billing:
+        condition: service_healthy
+    ports:
+      - "80:8000"
+      - "443:5001"
 
 volumes:
-  static_data:
+  static_vol:
   payment_vol:
+  access_log_vol:
