@@ -4,6 +4,7 @@ from psycopg import Cursor
 from requests import Session  # type: ignore
 from settings import get_settings
 from testdata.user_id import user_id
+from utils.db_query import get_payment_info
 from utils.get_jwt import get_token
 
 settings = get_settings()
@@ -22,6 +23,13 @@ def test_buy(postgres_cur: Cursor, http_con: Session) -> None:
         headers={"Authorization": f"Bearer {token}"},
     )
     assert response.status_code == HTTPStatus.OK
+
+    payment: dict = get_payment_info(postgres_cur, user_id)
+    external_payment = payment.get("external_payment")
+
+    assert isinstance(external_payment, dict)
+    assert payment.get("refunded") is False
+    assert external_payment.get("status") == "ExternalPaymentStatusEnum.PENDING"
 
 
 def test_buy_unauthorized(http_con: Session) -> None:

@@ -72,6 +72,7 @@ per-file-ignores =
     scheduler/src/repositories/postgres.py: WPS432 WPS323 WPS332
     scheduler/src/external_services/notification_service/requests_model.py: WPS110 WPS600
     tests/integration/billing_api/tests/test_buy_subscription.py: S101
+    tests/integration/billing_api/utils/db_query.py: WPS323
 
 exclude =
     # No need to traverse our git directory
