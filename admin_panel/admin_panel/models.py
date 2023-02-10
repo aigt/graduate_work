@@ -13,7 +13,6 @@ class Payments(models.Model):
     system_id = models.TextField()
     created_at = models.DateTimeField(blank=True, null=True)
 
-
     class Meta:
         managed = False
         db_table = "payments"
