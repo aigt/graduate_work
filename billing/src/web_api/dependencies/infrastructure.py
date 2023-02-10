@@ -1,3 +1,8 @@
+import logging
+import os
+
+from cachetools import cached  # type: ignore
+from cachetools.keys import hashkey  # type: ignore
 from fastapi import Depends
 from psycopg import AsyncConnection
 
@@ -20,6 +25,10 @@ from web_api.dependencies.common import get_settings
 from web_api.dependencies.db import get_postgres_connection
 
 
+@cached(
+    cache={},
+    key=lambda connection: hashkey("PaymentRepository"),
+)
 def get_payment_repository(connection: AsyncConnection = Depends(get_postgres_connection)) -> PaymentRepository:
     """Фабрика репозиториев платежей.
 
@@ -29,9 +38,15 @@ def get_payment_repository(connection: AsyncConnection = Depends(get_postgres_co
     Returns:
         PaymentRepository: Репозиторий платежей.
     """
+    logging.info("Creating and caching PaymentRepository, pid: {pid}".format(pid=os.getpid()))
+
     return PostgresPaymentRepository(connect=connection)
 
 
+@cached(
+    cache={},
+    key=lambda settings: hashkey("NotificationService"),
+)
 def get_notification_service(settings: Settings = Depends(get_settings)) -> NotificationService:
     """Фабрика нотификационных сервисов.
 
@@ -41,9 +56,14 @@ def get_notification_service(settings: Settings = Depends(get_settings)) -> Noti
     Returns:
         NotificationService: Нотификационный сервис.
     """
+    logging.info("Creating and caching NotificationService, pid: {pid}".format(pid=os.getpid()))
     return MovieNotificationService(settings.notification_service_host)
 
 
+@cached(
+    cache={},
+    key=lambda settings: hashkey("AuthService"),
+)
 def get_auth_service(settings: Settings = Depends(get_settings)) -> AuthService:
     """Фабрика сервиса авторизации.
 
@@ -53,9 +73,14 @@ def get_auth_service(settings: Settings = Depends(get_settings)) -> AuthService:
     Returns:
         AuthService: Сервис авторизации.
     """
+    logging.info("Creating and caching AuthService, pid: {pid}".format(pid=os.getpid()))
     return MovieAuthService(host=settings.auth_service_host)
 
 
+@cached(
+    cache={},
+    key=lambda payment_repository, notification_service, auth_service, settings: hashkey("PaymentSystem"),
+)
 def get_payment_system(
     payment_repository: PaymentRepository = Depends(get_payment_repository),
     notification_service: AuthService = Depends(get_notification_service),
@@ -73,6 +98,8 @@ def get_payment_system(
     Returns:
         PaymentSystem: Платёжная система.
     """
+    logging.info("Creating and caching PaymentSystem, pid: {pid}".format(pid=os.getpid()))
+
     return StripePaymentSystem(
         payment_repository=payment_repository,
         auth_service=auth_service,
