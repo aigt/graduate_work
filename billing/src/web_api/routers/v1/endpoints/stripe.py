@@ -63,7 +63,6 @@ async def callback(
     if event["type"] == "checkout.session.completed":
         session_id = SessionId(event["data"]["object"]["id"])
         payment_intent = PaymentId(event["data"]["object"]["payment_intent"])
-        print(f"This is session_id: {session_id}, this is {payment_intent}")
         await payment_repository.set_payment_id_by_payment_system(
             session_id,
             payment_intent,
