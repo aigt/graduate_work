@@ -10,6 +10,7 @@ from domain.aggregates_model.payment_aggregate.payment_external_id import (
 from domain.aggregates_model.payment_aggregate.payment_id import PaymentId
 from domain.aggregates_model.payment_aggregate.payment_system_id import PaymentSystemId
 from domain.aggregates_model.payment_aggregate.payment_user_id import PaymentUserId
+from domain.aggregates_model.payment_aggregate.session_id import SessionId
 from domain.aggregates_model.user_aggregate.user_id import UserId
 
 
@@ -65,4 +66,17 @@ class PaymentRepository(ABC):
 
         Args:
             payment_id (PaymentId): Идентификатор пользователя совершившего платёж.
+        """
+
+    @abstractmethod
+    async def set_payment_id_by_payment_system(
+        self,
+        session_id: SessionId,
+        payment_id: PaymentId,
+    ) -> None:
+        """Добавить идентификатор платежа при получении вебхука stripe.
+
+        Args:
+            session_id: SessionId: Идентификатор сессии
+            payment_id (PaymentId): Идентификатор сессии stripe.
         """

@@ -21,6 +21,7 @@ from domain.aggregates_model.payment_aggregate.payment_reposytory import (
 )
 from domain.aggregates_model.payment_aggregate.payment_system_id import PaymentSystemId
 from domain.aggregates_model.payment_aggregate.payment_user_id import PaymentUserId
+from domain.aggregates_model.payment_aggregate.session_id import SessionId
 from domain.aggregates_model.user_aggregate.user_id import UserId
 
 
@@ -162,3 +163,28 @@ class PostgresPaymentRepository(PaymentRepository):
                     payment_id=payment_id.id,
                 ),
             )
+            await self.connect.commit()
+
+    async def set_payment_id_by_payment_system(
+        self,
+        session_id: SessionId,
+        payment_id: PaymentId,
+    ) -> None:
+        """Обновить id платежа и статус при получении вебхука stripe.
+
+        Args:
+            session_id: SessionId: Идентификатор сессии
+            payment_id (PaymentId): Идентификатор сессии stripe.
+        """
+        async with self.connect.cursor(row_factory=dict_row) as cur:
+            await cur.execute(
+                """
+                UPDATE payments.payments
+                SET external_id = '{payment_id}'
+                WHERE external_id = '{session_id}'
+                """.format(
+                    payment_id=payment_id.id,
+                    session_id=session_id.id,
+                ),
+            )
+            await self.connect.commit()

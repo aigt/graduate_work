@@ -65,10 +65,14 @@ class User:
             payment_system (PaymentSystem): Платёжная система.
             payment_repository (PaymentRepository): Репозторий платежей.
         """
-        payment = await payment_repository.get_last_by_user_id(user_id=self.id.id)
-
+        payment = await payment_repository.get_last_by_user_id(
+            user_id=self.id,
+        )
         amount = ExternalRefundAmount(payment.amount.amount)
-        external_id = ExternalRefundPaymentId(id=payment.external_id)
-        await payment_system.create_refund(amount=amount, payment_id=external_id)
+        external_id = ExternalRefundPaymentId(id=payment.external_id.id)
+        await payment_system.create_refund(
+            amount=amount,
+            payment_id=external_id,
+        )
 
         await payment_repository.refund_payment(payment_id=payment.id)

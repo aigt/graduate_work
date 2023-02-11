@@ -30,6 +30,9 @@ from domain.aggregates_model.external_refund_aggregate.external_refund_id import
 from domain.aggregates_model.external_refund_aggregate.external_refund_payment_id import (
     ExternalRefundPaymentId,
 )
+from domain.aggregates_model.external_refund_aggregate.external_refund_status import (
+    ExternalRefundStatus,
+)
 from domain.aggregates_model.payment_aggregate.payment_reposytory import (
     PaymentRepository,
 )
@@ -181,22 +184,30 @@ class StripePaymentSystem(PaymentSystem):
             refunds_list.append(refund_obj)
         return refunds_list
 
-    async def create_refund(self, amount: ExternalRefundAmount, payment_id: ExternalRefundPaymentId) -> ExternalRefund:
+    async def create_refund(
+        self,
+        amount: ExternalRefundAmount,
+        payment_id: ExternalRefundPaymentId,
+    ) -> ExternalRefund:
         """Создать возврат.
 
         Args:
             amount (ExternalRefundAmount): Сумма возврата.
-            payment_id (ExternalRefundPaymentId): Идентификатор платежа, на который осуществляется возврат.
+            payment_id (ExternalRefundPaymentId): Идентификатор платежа,
+            на который осуществляется возврат.
 
         Returns:
             ExternalRefund: Созданный возврат.
         """
-        refund = stripe.Refund.create(payment_intent=payment_id, amount=amount)
+        refund = stripe.Refund.create(
+            payment_intent=payment_id.id,
+            amount=amount.amount,
+        )
         return ExternalRefund(
-            id=refund.id,
-            amount=refund.amount,
-            status=refund.status,
-            payment_id=refund.payment_intent,
+            id=ExternalRefundId(refund.id),
+            amount=ExternalRefundAmount(refund.amount),
+            status=ExternalRefundStatus(refund.status),
+            payment_id=ExternalRefundPaymentId(refund.payment_intent),
         )
 
     async def refund_by_id(self, refund_id: ExternalRefundId) -> ExternalRefund:

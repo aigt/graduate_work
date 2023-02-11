@@ -30,6 +30,8 @@ class Settings(BaseSettings):
 
     stripe_success_url: str = "http://localhost/success"
     stripe_cancel_url: str = "http://localhost/cancel"
+    dev_stripe_success_url: str = "http://localhost:8000/success"
+    dev_stripe_cancel_url: str = "http://localhost:8000/cancel"
     stripe_limit_per_page: int = 100
 
     # Auth service

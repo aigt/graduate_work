@@ -8,7 +8,13 @@ from web_api.dependencies import db
 from web_api.dependencies.common import get_settings
 from web_api.errors.handlers import install_exception_handlers
 from web_api.routers import health
-from web_api.routers.v1.endpoints import payments, stripe
+from web_api.routers.v1.endpoints import (
+    cancel_page,
+    payments,
+    refunds,
+    stripe,
+    success_page,
+)
 
 
 async def startup_event() -> None:
@@ -63,6 +69,21 @@ def build() -> FastAPI:
     app.include_router(
         payments.router,
         prefix=settings.api_v1_str + settings.api_payments,
+        tags=[openapi_settings.api_payments_tag],
+    )
+    app.include_router(
+        refunds.router,
+        prefix=settings.api_v1_str + settings.api_refunds,
+        tags=[openapi_settings.api_payments_tag],
+    )
+    app.include_router(
+        success_page.router,
+        prefix=settings.api_v1_str,
+        tags=[openapi_settings.api_payments_tag],
+    )
+    app.include_router(
+        cancel_page.router,
+        prefix=settings.api_v1_str,
         tags=[openapi_settings.api_payments_tag],
     )
 
