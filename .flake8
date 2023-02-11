@@ -71,8 +71,6 @@ per-file-ignores =
     scheduler/core/settings.py: WPS432
     scheduler/src/repositories/postgres.py: WPS432 WPS323 WPS332
     scheduler/src/external_services/notification_service/requests_model.py: WPS110 WPS600
-    billing/src/web_api/routers/v1/endpoints/cancel_page.py: DAR201 DAR101
-    billing/src/web_api/routers/v1/endpoints/success_page.py: DAR101 DAR201
 
 exclude =
     # No need to traverse our git directory
