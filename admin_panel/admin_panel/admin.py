@@ -7,8 +7,8 @@ from .models import Payments, Subscribers  # noqa: WPS300
 class SubscribersAdmin(admin.ModelAdmin):
     """Класс для отображения модели Подписчика в админке."""
 
-    list_display = ("id", "user_id", "subsciber_status", "date_subsctibe")
-    list_filter = ("subsciber_status",)
+    list_display = ("id", "user_id", "subscriber_status", "date_subscribe")
+    list_filter = ("subscriber_status",)
     search_fields = ("id",)
 
 
