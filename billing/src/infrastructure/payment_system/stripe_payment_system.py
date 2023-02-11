@@ -66,7 +66,7 @@ class StripePaymentSystem(PaymentSystem):
         stripe.api_key = stripe_secret_key
 
     @property
-    async def system_id(self) -> str:
+    def system_id(self) -> str:
         """Идентификатор платёжной системы.
 
         Returns:
@@ -89,7 +89,7 @@ class StripePaymentSystem(PaymentSystem):
                 {
                     "price_data": {
                         "currency": "usd",
-                        "unit_amount": amount.amount,
+                        "unit_amount": amount.amount * Decimal("100"),  # Значение в центах
                         "product_data": {
                             "name": "Subscription",
                             "description": "some description",
@@ -104,7 +104,9 @@ class StripePaymentSystem(PaymentSystem):
         )
         return ExternalPayment(
             id=ExternalPaymentId(id=session.id),
-            amount=ExternalPaymentAmount(amount=Decimal(session.amount_total)),
+            amount=ExternalPaymentAmount(
+                amount=Decimal(session.amount_total) / Decimal("100"),  # Значение приходит в центах
+            ),
             status=ExternalPaymentStatus(status=ExternalPaymentStatusEnum.PENDING),
             confirm_url=ExternalPaymentConfirmUrl(id=session.url),
         )

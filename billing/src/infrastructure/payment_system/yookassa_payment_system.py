@@ -68,7 +68,7 @@ class YookassaPaymentSystem(PaymentSystem):
         Configuration.secret_key = secret_key
 
     @property
-    async def system_id(self) -> str:
+    def system_id(self) -> str:
         """Идентификатор платёжной системы.
 
         Returns:
