@@ -27,7 +27,7 @@ async def pay_for_subscription(
     payment_repository: PaymentRepository = Depends(get_payment_repository),
 ) -> RedirectResponse:
     """Эндпоинт обработки запроса пользователя на оплату подписки.
-    \f
+     \f
     Args:
         settings (Settings): Depends(get_settings)
         user (User): Depends(get_user)

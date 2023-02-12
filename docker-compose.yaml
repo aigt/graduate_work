@@ -65,6 +65,7 @@ services:
       - ./nginx/configs:/etc/nginx/conf.d:ro
       - access_log_vol:/var/log/nginx
       - static_vol:/data/static:ro
+      - ./nginx/data/billing:/data/billing:ro
     depends_on:
       billing:
         condition: service_healthy
