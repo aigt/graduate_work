@@ -10,16 +10,23 @@ from web_api.dependencies.infrastructure import (
     get_payment_repository,
     get_payment_system,
 )
+from web_api.routers.v1.schemas.errors import ErrorResponse
+from web_api.routers.v1.schemas.responses import SimpleResponse
 
 router = APIRouter()
 
 
-@router.get("/refund_subscription", status_code=status.HTTP_200_OK)
+@router.get(
+    "/refund_subscription",
+    status_code=status.HTTP_200_OK,
+    response_model=SimpleResponse,
+    responses={status.HTTP_403_FORBIDDEN: {"model": ErrorResponse}},
+)
 async def refund_subscription(
     user: User = Depends(get_user),
     payment_system: PaymentSystem = Depends(get_payment_system),
     payment_repository: PaymentRepository = Depends(get_payment_repository),
-) -> status.HTTP_200_OK:
+) -> SimpleResponse:
     """Эндпоинт обработки запроса пользователя на отмену подписки.
     \f
     Args:
@@ -28,9 +35,10 @@ async def refund_subscription(
         payment_repository (PaymentRepository): Depends(get_payment_repository).
 
     Returns:
-        RedirectResponse: Ссылка перенаправления со статусом 307.
+        SimpleResponse: Ответ.
     """
     await user.refund_subscription(
         payment_system=payment_system,
         payment_repository=payment_repository,
     )
+    return SimpleResponse(message="Payment successfully refunded.")

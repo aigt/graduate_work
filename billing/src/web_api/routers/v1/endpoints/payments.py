@@ -15,11 +15,20 @@ from web_api.dependencies.infrastructure import (
     get_payment_repository,
     get_payment_system,
 )
+from web_api.routers.v1.schemas.errors import ErrorResponse
 
 router = APIRouter()
 
 
-@router.get("/pay_for_subscription", status_code=status.HTTP_200_OK)
+@router.get(
+    "/pay_for_subscription",
+    status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+    response_model=RedirectResponse,
+    responses={
+        status.HTTP_403_FORBIDDEN: {"model": ErrorResponse},
+        status.HTTP_307_TEMPORARY_REDIRECT: None,
+    },
+)
 async def pay_for_subscription(
     settings: Settings = Depends(get_settings),
     user: User = Depends(get_user),
