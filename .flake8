@@ -65,10 +65,14 @@ per-file-ignores =
     billing/src/infrastructure/payment_system/yookassa_payment_system.py: WPS201 WPS221
     billing/src/infrastructure/payment_system/stripe_payment_system.py: WPS201 WPS221
     billing/src/domain/services/auth_service.py: WPS531
+    tests/integration/billing_api/settings.py: WPS432
+    tests/integration/billing_api/utils/get_jwt.py: WPS432 WPS301 WPS326
     billing/src/infrastructure/payment_repository/payment_reposytory.py: WPS462 S608 WPS201
     scheduler/core/settings.py: WPS432
     scheduler/src/repositories/postgres.py: WPS432 WPS323 WPS332
     scheduler/src/external_services/notification_service/requests_model.py: WPS110 WPS600
+    tests/integration/billing_api/tests/test_buy_subscription.py: S101
+    tests/integration/billing_api/utils/db_query.py: WPS323
 
 exclude =
     # No need to traverse our git directory
@@ -88,6 +92,9 @@ exclude =
     dist,
     billing/src/infrastructure/auth_service/auth_pb2.py,
     billing/src/infrastructure/auth_service/auth_pb2_grpc.py,
+    tests/integration/billing_api/grpc_test_server/auth_pb2_grpc.py
+    tests/integration/billing_api/grpc_test_server/auth_pb2.py
+    tests/integration/billing_api/grpc_test_server/server.py
     scheduler/src/external_services/auth_service/auth_pb2.py,
     scheduler/src/external_services/auth_service/auth_pb2_grpc.py,
 
