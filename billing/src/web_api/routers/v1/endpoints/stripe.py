@@ -29,8 +29,10 @@ async def callback(
 ) -> dict[str, str]:
     """Эндпоинт обратного вызова для вэбхука.
 
+    См. также:
     Events object: https://stripe.com/docs/api/events/object
     Webhooks: https://stripe.com/docs/webhooks#acknowledge-events-immediately
+    \f
     Args:
         request (Request): Request.
         settings (Settings): Depends(get_settings)

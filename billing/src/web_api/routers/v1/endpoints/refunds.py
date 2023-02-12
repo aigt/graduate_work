@@ -21,7 +21,7 @@ async def refund_subscription(
     payment_repository: PaymentRepository = Depends(get_payment_repository),
 ) -> status.HTTP_200_OK:
     """Эндпоинт обработки запроса пользователя на отмену подписки.
-
+    \f
     Args:
         user (User): Depends(get_user)
         payment_system (PaymentSystem): Depends(get_settings).
