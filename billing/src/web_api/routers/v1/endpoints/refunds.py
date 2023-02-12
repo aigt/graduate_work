@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, status
-from fastapi.responses import RedirectResponse
 
 from domain.aggregates_model.payment_aggregate.payment_reposytory import (
     PaymentRepository,
@@ -16,11 +15,11 @@ router = APIRouter()
 
 
 @router.get("/refund_subscription", status_code=status.HTTP_200_OK)
-async def pay_for_subscription(
+async def refund_subscription(
     user: User = Depends(get_user),
     payment_system: PaymentSystem = Depends(get_payment_system),
     payment_repository: PaymentRepository = Depends(get_payment_repository),
-) -> RedirectResponse:
+) -> status.HTTP_200_OK:
     """Эндпоинт обработки запроса пользователя на отмену подписки.
 
     Args:

@@ -12,6 +12,7 @@ class OpenAPISettings(BaseSettings):
     api_healthcheck_tag = "healthcheck"
     api_stripe_tag = "stripe"
     api_payments_tag = "payments"
+    api_refunds_tag = "refunds"
 
     tags_metadata = [
         {

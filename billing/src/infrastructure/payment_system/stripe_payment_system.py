@@ -99,7 +99,7 @@ class StripePaymentSystem(PaymentSystem):
                 },
             ],
             mode="payment",
-            success_url=self.cancel_url,
+            success_url=self.success_url,
             cancel_url=self.cancel_url,
         )
         return ExternalPayment(

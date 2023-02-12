@@ -68,7 +68,7 @@ def build() -> FastAPI:
     app.include_router(
         refunds.router,
         prefix=settings.api_v1_str + settings.api_refunds,
-        tags=[openapi_settings.api_payments_tag],
+        tags=[openapi_settings.api_refunds_tag],
     )
 
     return app
