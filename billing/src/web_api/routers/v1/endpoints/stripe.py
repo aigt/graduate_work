@@ -26,6 +26,7 @@ router = APIRouter()
     status_code=status.HTTP_200_OK,
     response_model=StripeCallbackResponse,
     responses={status.HTTP_403_FORBIDDEN: {"model": ErrorResponse}},
+    summary="Вэбхук stripe.",
 )
 async def callback(
     request: Request,

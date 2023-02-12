@@ -25,6 +25,7 @@ router = APIRouter()
     status_code=status.HTTP_307_TEMPORARY_REDIRECT,
     response_model=None,
     responses={status.HTTP_403_FORBIDDEN: {"model": ErrorResponse}},
+    summary="Оплатить подписку.",
 )
 async def pay_for_subscription(
     settings: Settings = Depends(get_settings),
@@ -33,6 +34,9 @@ async def pay_for_subscription(
     payment_repository: PaymentRepository = Depends(get_payment_repository),
 ) -> RedirectResponse:
     """Эндпоинт обработки запроса пользователя на оплату подписки.
+
+    Эндпоинт запрашивает создание платежа в платёжной системе и возвращает
+    перенаправление пользователя на страницу подтверждения оплаты.
     \f
     Args:
         settings (Settings): Depends(get_settings)

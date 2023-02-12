@@ -21,6 +21,7 @@ router = APIRouter()
     status_code=status.HTTP_200_OK,
     response_model=SimpleResponse,
     responses={status.HTTP_403_FORBIDDEN: {"model": ErrorResponse}},
+    summary="Вернуть деньги за подписку.",
 )
 async def refund_subscription(
     user: User = Depends(get_user),
