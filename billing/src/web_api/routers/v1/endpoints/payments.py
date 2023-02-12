@@ -23,11 +23,8 @@ router = APIRouter()
 @router.get(
     "/pay_for_subscription",
     status_code=status.HTTP_307_TEMPORARY_REDIRECT,
-    response_model=RedirectResponse,
-    responses={
-        status.HTTP_403_FORBIDDEN: {"model": ErrorResponse},
-        status.HTTP_307_TEMPORARY_REDIRECT: None,
-    },
+    response_model=None,
+    responses={status.HTTP_403_FORBIDDEN: {"model": ErrorResponse}},
 )
 async def pay_for_subscription(
     settings: Settings = Depends(get_settings),

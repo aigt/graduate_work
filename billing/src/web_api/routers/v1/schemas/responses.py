@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class EmptyResponse(BaseModel):
@@ -8,10 +8,10 @@ class EmptyResponse(BaseModel):
 class SimpleResponse(BaseModel):
     """Простой ответ."""
 
-    message: str
+    message: str = Field(description="Сообщение о результате выполнения запроса.")
 
 
 class StripeCallbackResponse(BaseModel):
     """Ответ трайпа в колюэк ответ."""
 
-    message: str
+    success: str = Field(description="Подтверждение об обработке вызова (True).")

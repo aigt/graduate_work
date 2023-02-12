@@ -15,6 +15,7 @@ from web_api.dependencies.infrastructure import (
     get_payment_repository,
     get_payment_system,
 )
+from web_api.routers.v1.schemas.errors import ErrorResponse
 from web_api.routers.v1.schemas.responses import StripeCallbackResponse
 
 router = APIRouter()
@@ -24,6 +25,7 @@ router = APIRouter()
     "/callback",
     status_code=status.HTTP_200_OK,
     response_model=StripeCallbackResponse,
+    responses={status.HTTP_403_FORBIDDEN: {"model": ErrorResponse}},
 )
 async def callback(
     request: Request,
@@ -32,11 +34,12 @@ async def callback(
     stripe_signature: str | None = Header(default=None),
     payment_system: PaymentSystem = Depends(get_payment_system),
 ) -> StripeCallbackResponse:
-    """Эндпоинт обратного вызова для вэбхука.
+    """Эндпоинт обратного вызова для вэбхука stripe.
 
-    См. также:
-    Events object: https://stripe.com/docs/api/events/object
-    Webhooks: https://stripe.com/docs/webhooks#acknowledge-events-immediately
+    Более подробную информацию о приходящих запросах - см.:
+
+    - Events object: <https://stripe.com/docs/api/events/object>
+    - Webhooks: <https://stripe.com/docs/webhooks#acknowledge-events-immediately>
     \f
     Args:
         request (Request): Request.
