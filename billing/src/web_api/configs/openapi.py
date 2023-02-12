@@ -27,6 +27,10 @@ class OpenAPISettings(BaseSettings):
             "name": api_payments_tag,
             "description": "Апи для работы с платежами.",
         },
+        {
+            "name": api_refunds_tag,
+            "description": "Апи для работы с возвратами.",
+        },
     ]
 
     contact = {
