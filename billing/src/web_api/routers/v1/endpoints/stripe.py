@@ -15,22 +15,33 @@ from web_api.dependencies.infrastructure import (
     get_payment_repository,
     get_payment_system,
 )
+from web_api.routers.v1.schemas.errors import ErrorResponse
+from web_api.routers.v1.schemas.responses import StripeCallbackResponse
 
 router = APIRouter()
 
 
-@router.post("/callback", status_code=status.HTTP_200_OK)
+@router.post(
+    "/callback",
+    status_code=status.HTTP_200_OK,
+    response_model=StripeCallbackResponse,
+    responses={status.HTTP_403_FORBIDDEN: {"model": ErrorResponse}},
+    summary="Вэбхук stripe.",
+)
 async def callback(
     request: Request,
     settings: Settings = Depends(get_settings),
     payment_repository: PaymentRepository = Depends(get_payment_repository),
     stripe_signature: str | None = Header(default=None),
     payment_system: PaymentSystem = Depends(get_payment_system),
-) -> dict[str, str]:
-    """Эндпоинт обратного вызова для вэбхука.
+) -> StripeCallbackResponse:
+    """Эндпоинт обратного вызова для вэбхука stripe.
 
-    Events object: https://stripe.com/docs/api/events/object
-    Webhooks: https://stripe.com/docs/webhooks#acknowledge-events-immediately
+    Более подробную информацию о приходящих запросах - см.:
+
+    - Events object: <https://stripe.com/docs/api/events/object>
+    - Webhooks: <https://stripe.com/docs/webhooks#acknowledge-events-immediately>
+    \f
     Args:
         request (Request): Request.
         settings (Settings): Depends(get_settings)
@@ -43,7 +54,7 @@ async def callback(
         invalid_signature_exception: Некорректная сигнатура.
 
     Returns:
-        dict[str, str]: Отклик со статусом 200.
+        StripeCallbackResponse: Отклик со статусом 200.
     """
     event = None
     payload = await request.body()
@@ -70,4 +81,4 @@ async def callback(
     else:
         logging.info("Unhandled event type {}".format(event["type"]))
 
-    return {"success": "True"}
+    return StripeCallbackResponse(success="True")
