@@ -107,7 +107,9 @@ class StripePaymentSystem(PaymentSystem):
             amount=ExternalPaymentAmount(
                 amount=Decimal(session.amount_total) / Decimal("100"),  # Значение приходит в центах
             ),
-            status=ExternalPaymentStatus(status=ExternalPaymentStatusEnum.PENDING),
+            status=ExternalPaymentStatus(
+                status=ExternalPaymentStatusEnum.PENDING.value,
+            ),
             confirm_url=ExternalPaymentConfirmUrl(id=session.url),
         )
 

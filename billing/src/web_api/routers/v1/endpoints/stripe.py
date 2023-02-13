@@ -3,6 +3,9 @@ import logging
 import stripe
 from fastapi import APIRouter, Depends, Header, Request, status
 
+from domain.aggregates_model.external_payment_aggregate.external_payment_status import (
+    ExternalPaymentStatusStripe,
+)
 from domain.aggregates_model.payment_aggregate.payment_id import PaymentId
 from domain.aggregates_model.payment_aggregate.payment_reposytory import (
     PaymentRepository,
@@ -74,9 +77,13 @@ async def callback(
     if event["type"] == "checkout.session.completed":
         session_id = SessionId(event["data"]["object"]["id"])
         payment_intent = PaymentId(event["data"]["object"]["payment_intent"])
+        payment_status = ExternalPaymentStatusStripe(
+            event["data"]["object"]["payment_status"],
+        )
         await payment_repository.set_payment_id_by_payment_system(
             session_id,
             payment_intent,
+            payment_status,
         )
     else:
         logging.info("Unhandled event type {}".format(event["type"]))
