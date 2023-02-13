@@ -175,7 +175,7 @@ class PostgresPaymentRepository(PaymentRepository):
         payment_id: PaymentId,
         payment_status: ExternalPaymentStatusStripe,
     ) -> None:
-        """Обновить идентификатор платежа при получении вебхука stripe.
+        """Обновить id платежа и статус при получении вебхука stripe.
 
         Args:
             session_id (SessionId): Идентификатор сессии
