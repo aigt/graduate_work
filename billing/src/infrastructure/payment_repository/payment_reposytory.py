@@ -189,7 +189,7 @@ class PostgresPaymentRepository(PaymentRepository):
                 WHERE external_id = '{session_id}'
                 """.format(
                     external_id=payment_id.id,
-                    payment_status='{\"status\": ' + f'\"{payment_status.status}\"' + '}',
+                    payment_status='{"status": ' + f'"{payment_status.status}"' + "}",
                     session_id=session_id.id,
                 ),
             )
