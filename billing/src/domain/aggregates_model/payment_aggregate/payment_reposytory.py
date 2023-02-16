@@ -3,6 +3,9 @@ from abc import ABC, abstractmethod
 from domain.aggregates_model.external_payment_aggregate.external_payment import (
     ExternalPayment,
 )
+from domain.aggregates_model.external_payment_aggregate.external_payment_status import (
+    ExternalPaymentStatus,
+)
 from domain.aggregates_model.payment_aggregate.payment import Payment
 from domain.aggregates_model.payment_aggregate.payment_external_id import (
     PaymentExternalId,
@@ -73,10 +76,12 @@ class PaymentRepository(ABC):
         self,
         session_id: SessionId,
         payment_id: PaymentId,
+        payment_status: ExternalPaymentStatus,
     ) -> None:
-        """Добавить идентификатор платежа при получении вебхука stripe.
+        """Добавить id платежа, статус при получении вебхука stripe.
 
         Args:
-            session_id: SessionId: Идентификатор сессии
+            session_id (SessionId): Идентификатор сессии
             payment_id (PaymentId): Идентификатор сессии stripe.
+            payment_status (ExternalPaymentStatus): Статус платежа
         """

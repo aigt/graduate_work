@@ -67,8 +67,7 @@ per-file-ignores =
     billing/src/infrastructure/auth_service/movie_auth_service.py: WPS531
     billing/src/infrastructure/payment_system/yookassa_payment_system.py: WPS201 WPS221
     billing/src/infrastructure/payment_system/stripe_payment_system.py: WPS201 WPS221 DAR003
-    billing/src/infrastructure/payment_repository/payment_reposytory.py: WPS462 S608 WPS201
-    billing/src/infrastructure/payment_repository/payment_reposytory.py: WPS462 S608 WPS201 F524
+    billing/src/infrastructure/payment_repository/payment_reposytory.py: WPS462 S608 WPS201 F524 WPS440 Q000 WPS336
     scheduler/core/settings.py: WPS432
     scheduler/src/repositories/postgres.py: WPS432 WPS323 WPS332
     scheduler/src/external_services/notification_service/requests_model.py: WPS110 WPS600

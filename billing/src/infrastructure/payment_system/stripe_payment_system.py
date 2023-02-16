@@ -1,4 +1,6 @@
+from dataclasses import dataclass
 from decimal import Decimal
+from enum import Enum
 
 import stripe
 
@@ -39,6 +41,21 @@ from domain.aggregates_model.payment_aggregate.payment_reposytory import (
 from domain.services.auth_service import AuthService
 from domain.services.notification_service import NotificationService
 from domain.services.payment_system import PaymentSystem
+
+
+class ExternalPaymentStatusStripeEnum(Enum):
+    """Статусы платежей stripe."""
+
+    PAID = "paid"
+    UNPAID = "unpaid"
+    NO_PAYMENT_REQUIRED = "no_payment_required"
+
+
+@dataclass(frozen=True, slots=True)
+class ExternalPaymentStatusStripe:
+    """Статус платежа stripe."""
+
+    status: ExternalPaymentStatusStripeEnum
 
 
 class StripePaymentSystem(PaymentSystem):
@@ -107,7 +124,9 @@ class StripePaymentSystem(PaymentSystem):
             amount=ExternalPaymentAmount(
                 amount=Decimal(session.amount_total) / Decimal("100"),  # Значение приходит в центах
             ),
-            status=ExternalPaymentStatus(status=ExternalPaymentStatusEnum.PENDING),
+            status=ExternalPaymentStatus(
+                status=ExternalPaymentStatusEnum.PENDING.value,
+            ),
             confirm_url=ExternalPaymentConfirmUrl(id=session.url),
         )
 

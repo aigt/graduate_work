@@ -6,6 +6,9 @@ from psycopg.rows import dict_row
 from domain.aggregates_model.external_payment_aggregate.external_payment import (
     ExternalPayment,
 )
+from domain.aggregates_model.external_payment_aggregate.external_payment_status import (
+    ExternalPaymentStatus,
+)
 from domain.aggregates_model.payment_aggregate.payment import Payment
 from domain.aggregates_model.payment_aggregate.payment_amount import PaymentAmount
 from domain.aggregates_model.payment_aggregate.payment_external_body import (
@@ -169,21 +172,24 @@ class PostgresPaymentRepository(PaymentRepository):
         self,
         session_id: SessionId,
         payment_id: PaymentId,
+        payment_status: ExternalPaymentStatus,
     ) -> None:
-        """Обновить идентификатор платежа при получении вебхука stripe.
+        """Обновить id платежа и статус при получении вебхука stripe.
 
         Args:
-            session_id: SessionId: Идентификатор сессии
-            payment_id (PaymentId): Идентификатор сессии stripe.
+            session_id (SessionId): Идентификатор сессии
+            payment_id (PaymentId): Идентификатор сессии stripe
+            payment_status (ExternalPaymentStatus): Статус платежа
         """
         async with self.connect.cursor(row_factory=dict_row) as cur:
             await cur.execute(
                 """
                 UPDATE payments.payments
-                SET external_id = '{payment_id}'
+                SET external_id = '{external_id}', external_payment = external_payment  || '{payment_status}'::jsonb
                 WHERE external_id = '{session_id}'
                 """.format(
-                    payment_id=payment_id.id,
+                    external_id=payment_id.id,
+                    payment_status='{"status": ' + f'"{payment_status.status}"' + "}",
                     session_id=session_id.id,
                 ),
             )
