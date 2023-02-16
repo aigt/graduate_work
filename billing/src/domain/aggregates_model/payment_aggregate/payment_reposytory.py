@@ -4,7 +4,7 @@ from domain.aggregates_model.external_payment_aggregate.external_payment import 
     ExternalPayment,
 )
 from domain.aggregates_model.external_payment_aggregate.external_payment_status import (
-    ExternalPaymentStatusStripe,
+    ExternalPaymentStatus,
 )
 from domain.aggregates_model.payment_aggregate.payment import Payment
 from domain.aggregates_model.payment_aggregate.payment_external_id import (
@@ -76,12 +76,12 @@ class PaymentRepository(ABC):
         self,
         session_id: SessionId,
         payment_id: PaymentId,
-        payment_status: ExternalPaymentStatusStripe,
+        payment_status: ExternalPaymentStatus,
     ) -> None:
         """Добавить id платежа, статус при получении вебхука stripe.
 
         Args:
             session_id (SessionId): Идентификатор сессии
             payment_id (PaymentId): Идентификатор сессии stripe.
-            payment_status (ExternalPaymentStatusStripe): Статус платежа stripe
+            payment_status (ExternalPaymentStatus): Статус платежа
         """

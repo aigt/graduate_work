@@ -7,8 +7,7 @@ from domain.aggregates_model.external_payment_aggregate.external_payment import 
     ExternalPayment,
 )
 from domain.aggregates_model.external_payment_aggregate.external_payment_status import (
-    ExternalPaymentStatusStripe,
-    ExternalPaymentStatusStripeEnum,
+    ExternalPaymentStatus,
 )
 from domain.aggregates_model.payment_aggregate.payment import Payment
 from domain.aggregates_model.payment_aggregate.payment_amount import PaymentAmount
@@ -173,40 +172,25 @@ class PostgresPaymentRepository(PaymentRepository):
         self,
         session_id: SessionId,
         payment_id: PaymentId,
-        payment_status: ExternalPaymentStatusStripe,
+        payment_status: ExternalPaymentStatus,
     ) -> None:
         """Обновить id платежа и статус при получении вебхука stripe.
 
         Args:
             session_id (SessionId): Идентификатор сессии
             payment_id (PaymentId): Идентификатор сессии stripe
-            payment_status (ExternalPaymentStatusStripe): Статус платежа stripe
+            payment_status (ExternalPaymentStatus): Статус платежа
         """
-        if payment_status.status == ExternalPaymentStatusStripeEnum.PAID.value:
-            async with self.connect.cursor(row_factory=dict_row) as cur:
-                await cur.execute(
-                    """
-                    UPDATE payments.payments
-                    SET external_id = '{external_id}', external_payment = external_payment  || '{status}'::jsonb
-                    WHERE external_id = '{session_id}'
-                    """.format(
-                        external_id=payment_id.id,
-                        status='{"status": "succeeded"}',
-                        session_id=session_id.id,
-                    ),
-                )
-                await self.connect.commit()
-        else:
-            async with self.connect.cursor(row_factory=dict_row) as cur:
-                await cur.execute(
-                    """
-                    UPDATE payments.payments
-                    SET external_id = '{external_id}', external_payment = external_payment  || '{status}'::jsonb
-                    WHERE external_id = '{session_id}'
-                    """.format(
-                        external_id=payment_id.id,
-                        status='{"status": "canceled"}',
-                        session_id=session_id.id,
-                    ),
-                )
-                await self.connect.commit()
+        async with self.connect.cursor(row_factory=dict_row) as cur:
+            await cur.execute(
+                """
+                UPDATE payments.payments
+                SET external_id = '{external_id}', external_payment = external_payment  || '{payment_status}'::jsonb
+                WHERE external_id = '{session_id}'
+                """.format(
+                    external_id=payment_id.id,
+                    payment_status='{\"status\": ' + f'\"{payment_status.status}\"' + '}',
+                    session_id=session_id.id,
+                ),
+            )
+            await self.connect.commit()

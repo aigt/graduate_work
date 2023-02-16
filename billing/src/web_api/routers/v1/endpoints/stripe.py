@@ -4,7 +4,8 @@ import stripe
 from fastapi import APIRouter, Depends, Header, Request, status
 
 from domain.aggregates_model.external_payment_aggregate.external_payment_status import (
-    ExternalPaymentStatusStripe,
+    ExternalPaymentStatus,
+    ExternalPaymentStatusEnum,
 )
 from domain.aggregates_model.payment_aggregate.payment_id import PaymentId
 from domain.aggregates_model.payment_aggregate.payment_reposytory import (
@@ -12,6 +13,9 @@ from domain.aggregates_model.payment_aggregate.payment_reposytory import (
 )
 from domain.aggregates_model.payment_aggregate.session_id import SessionId
 from domain.services.payment_system import PaymentSystem
+from infrastructure.payment_system.stripe_payment_system import (
+    ExternalPaymentStatusStripeEnum,
+)
 from web_api.configs.settings import Settings
 from web_api.dependencies.common import get_settings
 from web_api.dependencies.infrastructure import (
@@ -77,9 +81,10 @@ async def callback(
     if event["type"] == "checkout.session.completed":
         session_id = SessionId(event["data"]["object"]["id"])
         payment_intent = PaymentId(event["data"]["object"]["payment_intent"])
-        payment_status = ExternalPaymentStatusStripe(
-            event["data"]["object"]["payment_status"],
-        )
+        if event["data"]["object"]["payment_status"] == ExternalPaymentStatusStripeEnum.PAID.value:
+            payment_status = ExternalPaymentStatus(status=ExternalPaymentStatusEnum.SUCCEDED.value)
+        else:
+            payment_status = ExternalPaymentStatus(status=ExternalPaymentStatusEnum.CANCELED.value)
         await payment_repository.set_payment_id_by_payment_system(
             session_id,
             payment_intent,

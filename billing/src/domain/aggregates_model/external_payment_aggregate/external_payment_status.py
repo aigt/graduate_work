@@ -15,14 +15,6 @@ class ExternalPaymentStatusEnum(Enum):
     CANCELED = "canceled"
 
 
-class ExternalPaymentStatusStripeEnum(Enum):
-    """Статусы платежей stripe."""
-
-    PAID = "paid"
-    UNPAID = "unpaid"
-    NO_PAYMENT_REQUIRED = "no_payment_required"
-
-
 class ExternalPaymentStatusField(ValidatebleDescriptor):
     """Дескриптор поля статуса платежа."""
 
@@ -41,10 +33,3 @@ class ExternalPaymentStatus:
     """Статус платежа."""
 
     status: ExternalPaymentStatusEnum
-
-
-@dataclass(frozen=True, slots=True)
-class ExternalPaymentStatusStripe:
-    """Статус платежа stripe."""
-
-    status: ExternalPaymentStatusStripeEnum
