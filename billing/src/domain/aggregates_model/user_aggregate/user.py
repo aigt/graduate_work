@@ -76,3 +76,4 @@ class User:
         )
 
         await payment_repository.refund_payment(payment_id=payment.id)
+        await payment_system.on_refunded_event(str(self.id.id))
