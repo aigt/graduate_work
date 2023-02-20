@@ -1,5 +1,5 @@
 import enum
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel
 
@@ -40,4 +40,4 @@ class Notification(BaseModel):
     meta: Meta
     type: NotificationType
     custom_template: Optional[Any]
-    fields: Dict[str, str]
+    fields: dict
