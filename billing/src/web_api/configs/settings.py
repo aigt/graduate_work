@@ -33,10 +33,10 @@ class Settings(BaseSettings):
     stripe_limit_per_page: int = 100
 
     # Auth service
-    auth_service_host = "localhost"
+    auth_service_host = Field("localhost")
 
-    # Auth service
-    notification_service_host = "localhost"
+    # Notification service
+    notification_service_host = Field("localhost")
 
     # Настройки PostgresDB
     payments_postgres_dsn: PostgresDsn = Field(

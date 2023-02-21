@@ -90,6 +90,7 @@ async def callback(
             payment_intent,
             payment_status,
         )
+        await payment_system.on_payment_event(payment_intent, event)
     else:
         logging.info("Unhandled event type {}".format(event["type"]))
 

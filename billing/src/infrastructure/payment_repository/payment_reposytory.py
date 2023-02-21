@@ -102,7 +102,7 @@ class PostgresPaymentRepository(PaymentRepository):
                 FROM payments.payments
                 WHERE external_id = '{external_id}'
                 """.format(
-                    external_id=external_id.id,
+                    external_id=external_id.id.id,
                 ),
             )
             payment: dict = await cur.fetchone()

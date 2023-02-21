@@ -31,7 +31,7 @@ class MovieNotificationService(NotificationService):
         Args:
             user_id (UserId): Id пользователя.
         """
-        await self._send({"user_id": user_id})
+        await self._send({"user_id": str(user_id)})
 
     async def notify_user_about_refund(self, user_id: UserId, amount: ExternalRefundAmount) -> None:
         """Оповестить пользователя о возврате.
@@ -40,7 +40,7 @@ class MovieNotificationService(NotificationService):
             user_id (UserId): Id пользователя.
             amount (ExternalRefundAmount): Сумма возврата.
         """
-        data_for_send = {"user_id": user_id, "amount": amount}
+        data_for_send = {"user_id": str(user_id), "amount": amount}
         await self._send(data_for_send)
 
     async def _send(self, data_for_send: dict) -> None:

@@ -50,6 +50,6 @@ class MovieAuthService(AuthService):
         """
         async with insecure_channel(self.host) as channel:
             stub = AuthNotifyStub(channel)
-            response = stub.SetUserRole(ChangeRoleRequest(user_id=str(user_id), role=role.value))
+            response = await stub.SetUserRole(ChangeRoleRequest(user_id=str(user_id), role=role.value))
             if response == ResponseStatuses.Value("BAD"):
                 raise RoleChangeError()

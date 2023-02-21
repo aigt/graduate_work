@@ -27,6 +27,7 @@ from domain.aggregates_model.payment_aggregate.payment_external_id import (
 from domain.aggregates_model.payment_aggregate.payment_reposytory import (
     PaymentRepository,
 )
+from domain.aggregates_model.user_aggregate.user_id import UserId
 from domain.services.auth_service import AuthService
 from domain.services.notification_service import NotificationService
 
@@ -58,6 +59,14 @@ class PaymentSystem(ABC):
         payment = await self._payment_repository.get_by_external_id(PaymentExternalId(id=payment_id))
         await self._auth_service.add_subscriber_status(payment.user_id.id)
         await self._notification_service.notify_user_about_payment(payment.user_id.id)
+
+    async def on_refunded_event(self, user_id: UserId) -> None:
+        """Событие возврата платежа.
+
+        Args:
+            user_id (UserId): Идентификатор пользователя.
+        """
+        await self._auth_service.del_subscriber_status(user_id)
 
     @property
     @abstractmethod
